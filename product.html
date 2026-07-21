@@ -657,6 +657,8 @@
         <div class="nav-item">
           <a href="index.html?category=accessory">accessory</a>
           <div class="dropdown">
+            <!-- 🆕 已加入：帽 -->
+            <a href="index.html?category=accessory&sub=帽">帽</a>
             <a href="index.html?category=accessory&sub=袋">袋</a>
             <a href="index.html?category=accessory&sub=戒指">戒指</a>
             <a href="index.html?category=accessory&sub=頸鏈">頸鏈</a>
@@ -795,7 +797,8 @@
           document.getElementById('prodPrice').innerText = `HK$${currentProduct.price}`;
           
           if (currentProduct.category) {
-            const catLabel = currentProduct.subCategory ? `${currentProduct.category} / ${currentProduct.subCategory}` : currentProduct.category;
+            const subCat = currentProduct.subCategory || currentProduct.subcategory || currentProduct.sub_category;
+            const catLabel = subCat ? `${currentProduct.category} / ${subCat}` : currentProduct.category;
             document.getElementById('prodCategory').innerText = catLabel.toLowerCase();
           }
 
