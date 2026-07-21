@@ -1,0 +1,581 @@
+/* 1. 基礎重置與高級字體設定 */
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Jost', sans-serif; 
+    background-color: #FFFFFF; 
+    color: #111111; 
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.4s ease;
+}
+
+a:hover {
+    opacity: 0.5;
+}
+
+/* 2. 頂部導覽列 (保留黑色 + 右上角購物車) */
+header {
+    padding: 25px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed; 
+    top: 0;
+    width: 100%;
+    z-index: 999;
+    background-color: #050505;
+    color: #FFFFFF;
+}
+
+.brand-logo {
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: lowercase;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
+nav {
+    display: flex;
+    gap: 30px;
+}
+
+nav a {
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: lowercase; 
+    color: #FFFFFF;
+}
+
+/* 白線圖案購物車 Logo */
+.cart-icon-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+}
+
+.cart-icon-svg {
+    width: 20px;
+    height: 20px;
+    stroke: #FFFFFF;
+    stroke-width: 1.2;
+    fill: none;
+    transition: transform 0.3s ease;
+}
+
+.cart-icon-link:hover .cart-icon-svg {
+    transform: scale(1.1);
+}
+
+.cart-badge {
+    position: absolute;
+    top: -6px;
+    right: -10px;
+    background-color: #FFFFFF;
+    color: #050505;
+    font-size: 9px;
+    font-weight: 400;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+/* 3. 主要內容區塊 */
+main {
+    padding: 140px 5% 100px 5%; 
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* 4. 畫廊級別商品網格 - 強制 4 欄 (Desktop) */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 60px 25px; 
+}
+
+.product-card {
+    display: block;
+    text-align: left; 
+    cursor: pointer;
+}
+
+.image-wrapper {
+    width: 100%;
+    background-color: #FAFAFA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.product-card img {
+    width: 100%;
+    height: auto;
+    max-height: 480px;      
+    object-fit: contain;    
+    filter: grayscale(15%); 
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.8s ease;
+    display: block;
+}
+
+.product-card:hover img {
+    transform: scale(1.03); 
+    filter: grayscale(0%);
+}
+
+.product-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.product-title {
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    text-transform: lowercase;
+    color: #111111;
+}
+
+.product-price {
+    font-size: 12px;
+    font-weight: 200;
+    letter-spacing: 0.1em;
+    color: #777777;
+    text-transform: uppercase;
+}
+
+/* 5. 商品詳情頁面 (左 1/4 相片，右文字) */
+.product-detail-container {
+    display: flex;
+    gap: 70px;
+    align-items: flex-start;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.product-gallery-slider {
+    position: relative;
+    width: 28%;
+    min-width: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.slider-image-wrapper {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FAFAFA;
+    overflow: hidden;
+}
+
+.slider-image-wrapper img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    transition: opacity 0.3s ease;
+}
+
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #111111;
+    color: #111111;
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-family: 'Jost', sans-serif;
+    user-select: none;
+}
+
+.slider-btn:hover {
+    background: #111111;
+    color: #FFFFFF;
+}
+
+.slider-btn.prev { left: 8px; }
+.slider-btn.next { right: 8px; }
+
+.slider-counter {
+    margin-top: 15px;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    color: #777777;
+}
+
+.product-info-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-top: 10px;
+}
+
+.product-category {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: lowercase;
+    color: #888888;
+}
+
+.product-title-detail {
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: lowercase;
+    color: #111111;
+}
+
+.product-price-detail {
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: #111111;
+}
+
+.product-divider {
+    width: 100%;
+    height: 1px;
+    background-color: #EEEEEE;
+    margin: 10px 0;
+}
+
+.product-description {
+    font-size: 12px;
+    color: #555555;
+    line-height: 2;
+    letter-spacing: 0.05em;
+}
+
+.desc-title {
+    font-weight: 400;
+    color: #111111;
+    margin-bottom: 8px;
+    text-transform: lowercase;
+    letter-spacing: 0.1em;
+}
+
+.desc-list {
+    list-style: none;
+    padding: 0;
+}
+
+.desc-list li {
+    position: relative;
+    padding-left: 12px;
+    margin-bottom: 4px;
+}
+
+.desc-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #888;
+}
+
+.product-actions {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+}
+
+.btn-black {
+    display: inline-block;
+    padding: 14px 32px;
+    background-color: #111111;
+    color: #FFFFFF;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: lowercase;
+    border: 1px solid #111111;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.btn-black:hover {
+    background-color: #333333;
+    opacity: 1;
+}
+
+/* 6. 購物車 & 結帳頁面 CSS (`cart.html`) */
+.cart-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.cart-title {
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: lowercase;
+    margin-bottom: 40px;
+    text-align: center;
+    color: #111111;
+}
+
+/* 購物車列表表格 */
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+}
+
+.cart-table th {
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: lowercase;
+    color: #888888;
+    border-bottom: 1px solid #EEEEEE;
+    padding-bottom: 15px;
+    text-align: left;
+}
+
+.cart-table td {
+    padding: 20px 0;
+    border-bottom: 1px solid #F5F5F5;
+    vertical-align: middle;
+    font-size: 12px;
+}
+
+.cart-item-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.cart-item-img {
+    width: 60px;
+    height: 80px;
+    object-fit: contain;
+    background-color: #FAFAFA;
+}
+
+.cart-item-name {
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    text-transform: lowercase;
+}
+
+.cart-item-id {
+    font-size: 11px;
+    color: #888888;
+    margin-top: 2px;
+}
+
+.qty-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.qty-btn {
+    background: none;
+    border: 1px solid #DDD;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.remove-btn {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.remove-btn:hover {
+    color: #111;
+}
+
+.cart-summary {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.cart-total-text {
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+}
+
+/* 結帳頁面專用 (付款細節) */
+.checkout-section {
+    display: none; /* 預設隱藏，按結帳後顯示 */
+}
+
+.order-summary-box {
+    background-color: #FAFAFA;
+    padding: 30px;
+    margin-bottom: 50px;
+}
+
+.order-summary-title {
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: lowercase;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #E0E0E0;
+    padding-bottom: 10px;
+}
+
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.summary-table td, .summary-table th {
+    padding: 10px 0;
+    font-size: 12px;
+    text-align: left;
+}
+
+.summary-table th {
+    font-weight: 300;
+    color: #777;
+    border-bottom: 1px solid #EEE;
+}
+
+.payment-section {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.payment-title {
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: lowercase;
+    margin-bottom: 30px;
+    color: #111111;
+}
+
+.qr-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+}
+
+.qr-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.qr-card img {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    border: 1px solid #EEEEEE;
+    padding: 10px;
+    background-color: #FFFFFF;
+}
+
+.qr-card span {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: #666666;
+}
+
+.notice-text {
+    font-size: 13px;
+    color: #333333;
+    letter-spacing: 0.05em;
+    margin-bottom: 30px;
+    line-height: 1.8;
+}
+
+/* 7. 手機版響應式設計 */
+@media (max-width: 768px) {
+    header {
+        padding: 20px 5%;
+    }
+    .header-right {
+        gap: 20px;
+    }
+    nav {
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    main {
+        padding-top: 160px;
+    }
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px 15px;
+    }
+    .product-detail-container {
+        flex-direction: column;
+        gap: 35px;
+    }
+    .product-gallery-slider {
+        width: 100%;
+        max-width: 100%;
+    }
+    .qr-grid {
+        gap: 20px;
+    }
+    .qr-card img {
+        width: 140px;
+        height: 140px;
+    }
+}

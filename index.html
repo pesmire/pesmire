@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pesmire. | collection</title>
+  <style>
+    /* 1. 基礎重置與高級字體設定 */
+    @import url('https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        font-family: 'Jost', sans-serif; 
+        background-color: #FFFFFF; 
+        color: #111111; 
+        line-height: 1.8;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; transition: opacity 0.4s ease; }
+    a:hover { opacity: 0.5; }
+
+    /* 2. 頂部導覽列 (保留黑色 + 右上角購物車) */
+    header {
+        padding: 30px 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed; 
+        top: 0;
+        width: 100%;
+        z-index: 999;
+        background-color: #050505;
+        color: #FFFFFF;
+    }
+
+    .brand-logo {
+        color: #FFFFFF;
+        font-size: 20px;
+        font-weight: 300;
+        letter-spacing: 2px;
+        text-transform: lowercase;
+    }
+
+    .header-right {
+        display: flex;
+        align-items: center;
+        gap: 35px;
+    }
+
+    nav { display: flex; gap: 40px; }
+
+    /* --- 下拉選單 (Dropdown) --- */
+    .nav-item {
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+    }
+
+    .nav-item > a {
+        font-size: 11px;
+        font-weight: 300;
+        letter-spacing: 0.15em;
+        text-transform: lowercase; 
+        color: #FFFFFF;
+    }
+
+    .dropdown {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(15px);
+        background-color: #050505; 
+        border: 1px solid #222;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        min-width: 140px;
+        text-align: center;
+        padding: 10px 0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .nav-item:hover .dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    .dropdown a {
+        font-size: 11px;
+        font-weight: 300;
+        letter-spacing: 0.15em;
+        color: #FFFFFF;
+        padding: 12px 20px;
+        display: block;
+        text-transform: lowercase;
+    }
+    .dropdown a:hover {
+        background-color: #1a1a1a;
+        opacity: 1;
+    }
+
+    /* 白線購物車 Logo */
+    .cart-icon-link {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #FFFFFF;
+        cursor: pointer;
+    }
+
+    .cart-icon-svg {
+        width: 20px;
+        height: 20px;
+        stroke: #FFFFFF;
+        stroke-width: 1.2;
+        fill: none;
+        transition: transform 0.3s ease;
+    }
+
+    .cart-icon-link:hover .cart-icon-svg {
+        transform: scale(1.1);
+    }
+
+    .cart-badge {
+        position: absolute;
+        top: -6px;
+        right: -10px;
+        background-color: #FFFFFF;
+        color: #050505;
+        font-size: 9px;
+        font-weight: 400;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+    }
+
+    /* 3. 主要內容區塊 */
+    main {
+        padding: 120px 5% 100px 5%; 
+        max-width: 1800px;
+        margin: 0 auto;
+    }
+
+    h2.section-title {
+        font-size: 14px;
+        font-weight: 300;
+        letter-spacing: 0.3em;
+        text-align: center;
+        margin-bottom: 60px;
+        text-transform: lowercase;
+        color: #555555;
+    }
+
+    /* 篩選器 Container */
+    .filter-container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-bottom: 30px;
+        gap: 10px;
+    }
+
+    .filter-label {
+        font-size: 11px;
+        font-weight: 300;
+        letter-spacing: 0.1em;
+        color: #888888;
+        text-transform: lowercase;
+    }
+
+    .filter-select {
+        padding: 8px 30px 8px 12px;
+        border: 1px solid #E0E0E0;
+        background-color: #FAFAFA;
+        font-family: 'Jost', sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        color: #111111;
+        outline: none;
+        cursor: pointer;
+        border-radius: 0;
+        appearance: none;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6"><path d="M0 0l5 5 5-5z" fill="%23111111"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        transition: border-color 0.3s ease;
+    }
+
+    .filter-select:focus {
+        border-color: #111111;
+        background-color: #FFFFFF;
+    }
+
+    /* 4. 畫廊級別商品網格 (首頁 4 列 vs 分類頁 3 列) */
+    .product-grid {
+        display: grid;
+        gap: 80px 40px; 
+    }
+
+    /* 首頁：每排 4 個 (4x2 排版) */
+    .product-grid.home-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* 分類頁面：每排 3 個 */
+    .product-grid.category-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .product-card { display: block; text-align: left; cursor: pointer; }
+
+    .image-wrapper {
+        width: 100%; aspect-ratio: 3 / 4; overflow: hidden;
+        margin-bottom: 20px; background-color: #F5F5F5;
+    }
+
+    .product-card img {
+        width: 100%; height: 100%; object-fit: cover; filter: grayscale(15%); 
+        transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.8s ease;
+    }
+
+    .product-card:hover img { transform: scale(1.05); filter: grayscale(0%); }
+
+    .product-info { display: flex; justify-content: space-between; align-items: baseline; }
+
+    .product-title {
+        font-size: 13px; font-weight: 300; letter-spacing: 0.05em; text-transform: lowercase; color: #111111;
+    }
+    .product-price {
+        font-size: 12px; font-weight: 200; letter-spacing: 0.1em; color: #777777; text-transform: uppercase;
+    }
+    
+    .no-products {
+        grid-column: 1 / -1; text-align: center; font-size: 13px; color: #999; letter-spacing: 0.1em; padding: 50px 0;
+    }
+
+    /* 首頁佈局與細分類導航樣式 */
+    .home-section {
+        margin-bottom: 150px;
+    }
+    
+    .more-container {
+        text-align: center;
+        margin-top: 60px;
+    }
+    
+    .more-btn {
+        font-size: 11px; font-weight: 300; letter-spacing: 0.2em; text-transform: lowercase;
+        color: #111111; border-bottom: 1px solid #111111; padding-bottom: 4px; transition: opacity 0.4s ease;
+    }
+    
+    .sub-category-nav {
+        display: flex; justify-content: center; gap: 30px; margin-bottom: 80px; flex-wrap: wrap;
+    }
+    
+    .sub-category-nav a {
+        font-size: 12px; font-weight: 300; letter-spacing: 0.15em; color: #999999; text-transform: lowercase;
+    }
+    
+    .sub-category-nav a.active, .sub-category-nav a:hover {
+        color: #111111;
+    }
+
+    /* 5. 右側購物車預覽抽屜 (SIDE CART DRAWER) */
+    .cart-drawer-overlay {
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background-color: rgba(0, 0, 0, 0.4); z-index: 1000;
+        opacity: 0; visibility: hidden; transition: all 0.4s ease;
+    }
+    .cart-drawer-overlay.active { opacity: 1; visibility: visible; }
+
+    .cart-drawer {
+        position: fixed; top: 0; right: 0; width: 380px; max-width: 88vw; height: 100vh;
+        background-color: #FFFFFF; z-index: 1001; transform: translateX(100%);
+        transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        display: flex; flex-direction: column; box-shadow: -5px 0 25px rgba(0,0,0,0.08);
+    }
+    .cart-drawer.active { transform: translateX(0); }
+
+    .cart-drawer-header {
+        padding: 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #EEEEEE;
+    }
+    .cart-drawer-title { font-size: 13px; font-weight: 300; letter-spacing: 0.2em; text-transform: lowercase; color: #111111; }
+    .cart-drawer-close { background: none; border: none; font-size: 22px; cursor: pointer; color: #111111; line-height: 1; padding: 0 5px; }
+
+    .cart-drawer-body { flex: 1; padding: 20px 25px; overflow-y: auto; }
+    .drawer-empty-msg { text-align: center; color: #888888; font-size: 12px; letter-spacing: 0.1em; margin-top: 60px; }
+
+    .drawer-item { display: flex; gap: 15px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #F5F5F5; align-items: center; }
+    .drawer-item-img { width: 55px; height: 75px; object-fit: contain; background-color: #FAFAFA; flex-shrink: 0; }
+    .drawer-item-details { flex: 1; }
+    .drawer-item-title { font-size: 12px; font-weight: 300; letter-spacing: 0.05em; text-transform: lowercase; color: #111111; }
+    .drawer-item-meta { font-size: 10px; color: #888888; margin-top: 3px; letter-spacing: 0.05em; }
+    .drawer-item-price { font-size: 11px; font-weight: 300; margin-top: 5px; color: #111111; }
+
+    .cart-drawer-footer { padding: 25px; border-top: 1px solid #EEEEEE; background-color: #FFFFFF; display: flex; flex-direction: column; gap: 15px; }
+    .drawer-subtotal { display: flex; justify-content: space-between; font-size: 13px; font-weight: 300; letter-spacing: 0.1em; color: #111111; }
+    .drawer-btn-group { display: flex; gap: 10px; }
+
+    /* 按鈕樣式 */
+    .btn-black {
+        display: flex; align-items: center; justify-content: center; padding: 12px 0;
+        background-color: #111111; color: #FFFFFF; font-size: 10px; font-weight: 300;
+        letter-spacing: 0.2em; text-transform: lowercase; border: 1px solid #111111; cursor: pointer; transition: all 0.3s ease; text-align: center;
+    }
+    .btn-black:hover { background-color: #333333; opacity: 1; }
+
+    .btn-outline {
+        display: flex; align-items: center; justify-content: center; padding: 12px 0;
+        background-color: transparent; color: #111111; font-size: 10px; font-weight: 300;
+        letter-spacing: 0.2em; text-transform: lowercase; border: 1px solid #111111; cursor: pointer; transition: all 0.3s ease; text-align: center;
+    }
+    .btn-outline:hover { background-color: #111111; color: #FFFFFF; opacity: 1; }
+
+    .drawer-btn-group button, .drawer-btn-group a { flex: 1; }
+
+    /* 6. 清空購物車二次確認 Modal 彈窗 */
+    .confirm-modal-overlay {
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5); z-index: 2000;
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0; visibility: hidden; transition: all 0.3s ease;
+    }
+    .confirm-modal-overlay.active { opacity: 1; visibility: visible; }
+
+    .confirm-modal-box {
+        background-color: #FFFFFF; padding: 35px 30px; width: 90%; max-width: 360px;
+        text-align: center; border: 1px solid #111111; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+    .confirm-modal-title { font-size: 13px; font-weight: 300; letter-spacing: 0.1em; color: #111111; margin-bottom: 25px; }
+    .confirm-modal-actions { display: flex; gap: 12px; justify-content: center; }
+    .confirm-modal-actions button { flex: 1; padding: 10px 0; font-size: 10px; }
+
+    /* 7. 手機版響應式設計 */
+    @media (max-width: 768px) {
+        header { flex-direction: column; padding: 20px 5%; gap: 20px; }
+        .header-right { width: 100%; justify-content: space-between; }
+        nav { gap: 15px; flex-wrap: wrap; justify-content: center; }
+        main { padding-top: 170px; }
+        .product-grid.home-grid, .product-grid.category-grid { grid-template-columns: repeat(2, 1fr); gap: 40px 15px; }
+        .product-info { flex-direction: column; gap: 5px; }
+        .filter-container { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="brand-logo">pesmire.</a>
+    
+    <div class="header-right">
+      <nav>
+        <div class="nav-item"><a href="index.html">home</a></div>
+        <div class="nav-item"><a href="index.html?category=hot">hot</a></div>
+        <div class="nav-item"><a href="index.html?category=instock">現貨專區</a></div>
+        <div class="nav-item"><a href="index.html?category=new">new</a></div>
+
+        <div class="nav-item">
+          <a href="index.html?category=top">top</a>
+          <div class="dropdown">
+            <a href="index.html?category=top&sub=短袖背心">短袖背心</a>
+            <a href="index.html?category=top&sub=長袖">長袖</a>
+            <a href="index.html?category=top&sub=外套">外套</a>
+          </div>
+        </div>
+        
+        <div class="nav-item">
+          <a href="index.html?category=bottom">bottom</a>
+          <div class="dropdown">
+            <a href="index.html?category=bottom&sub=短褲">短褲</a>
+            <a href="index.html?category=bottom&sub=長褲">長褲</a>
+          </div>
+        </div>
+
+        <div class="nav-item"><a href="index.html?category=set">set</a></div>
+
+        <div class="nav-item">
+          <a href="index.html?category=accessory">accessory</a>
+          <div class="dropdown">
+            <a href="index.html?category=accessory&sub=袋">袋</a>
+            <a href="index.html?category=accessory&sub=戒指">戒指</a>
+            <a href="index.html?category=accessory&sub=頸鏈">頸鏈</a>
+            <a href="index.html?category=accessory&sub=皮帶">皮帶</a>
+            <a href="index.html?category=accessory&sub=鞋">鞋</a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- 白線圖案購物車 Logo -->
+      <div class="cart-icon-link" onclick="openCartDrawer()" title="shopping cart">
+        <svg class="cart-icon-svg" viewBox="0 0 24 24">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="mainContent">
+    <!-- 內容將由 JavaScript 完全接管 -->
+  </main>
+
+  <!-- 右側購物車預覽抽屜 (SIDE CART DRAWER) -->
+  <div class="cart-drawer-overlay" id="cartOverlay" onclick="closeCartDrawer()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-drawer-header">
+      <span class="cart-drawer-title">shopping cart</span>
+      <button class="cart-drawer-close" onclick="closeCartDrawer()">&times;</button>
+    </div>
+
+    <div class="cart-drawer-body" id="drawerBody">
+      <!-- 購物車商品內容動態渲染區 -->
+    </div>
+
+    <div class="cart-drawer-footer">
+      <div class="drawer-subtotal">
+        <span>total</span>
+        <span id="drawerSubtotal">HK$0</span>
+      </div>
+      <div class="drawer-btn-group">
+        <button class="btn-outline" onclick="openConfirmModal()">清空購物車</button>
+        <a href="cart.html" class="btn-black">查看購物車</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 清空購物車二次確認 Modal -->
+  <div class="confirm-modal-overlay" id="confirmModal">
+    <div class="confirm-modal-box">
+      <div class="confirm-modal-title">是否確定清空購物車？</div>
+      <div class="confirm-modal-actions">
+        <button class="btn-outline" onclick="closeConfirmModal()">取消</button>
+        <button class="btn-black" onclick="confirmClearCart()">確定</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentCategoryProducts = []; // 儲存當前分類過濾後的商品清單
+
+    function generateProductCard(product) {
+       return `
+         <a href="product.html?id=${product.id}" class="product-card">
+            <div class="image-wrapper">
+              <img src="images/${product.id}/1.webp" alt="${product.name}" loading="lazy">
+            </div>
+            <div class="product-info">
+              <span class="product-title">${product.name}</span>
+              <span class="product-price">HK$${product.price}</span>
+            </div>
+         </a>
+       `;
+    }
+
+    // 1. 從 Product ID 提取數字進行新舊判斷 (例如 j089 -> 89)
+    function getIdNumber(id) {
+      if (!id) return 0;
+      const match = id.match(/\d+/);
+      return match ? parseInt(match[0], 10) : 0;
+    }
+
+    // 2. 排序核心邏輯
+    function sortProducts(products, sortType) {
+      let list = [...products];
+      if (sortType === 'price-high') {
+        return list.sort((a, b) => b.price - a.price);
+      } else if (sortType === 'price-low') {
+        return list.sort((a, b) => a.price - b.price);
+      } else if (sortType === 'oldest') {
+        return list.sort((a, b) => getIdNumber(a.id) - getIdNumber(b.id));
+      } else {
+        // 'newest' (預設：由新至舊，數字越大越新)
+        return list.sort((a, b) => getIdNumber(b.id) - getIdNumber(a.id));
+      }
+    }
+
+    // 3. 當使用者選擇排序時觸發
+    function applySorting() {
+      const sortSelect = document.getElementById('sortSelect');
+      if (!sortSelect) return;
+
+      const sortType = sortSelect.value;
+      const sortedProducts = sortProducts(currentCategoryProducts, sortType);
+      const gridContainer = document.getElementById('categoryProductGrid');
+      
+      if (gridContainer) {
+        if (sortedProducts.length === 0) {
+          gridContainer.innerHTML = '<div class="no-products">coming soon... 此分類暫時未有商品</div>';
+        } else {
+          gridContainer.innerHTML = sortedProducts.map(p => generateProductCard(p)).join('');
+        }
+      }
+    }
+
+    // 4. 更新購物車數量 Badge
+    function updateCartBadge() {
+      const cart = JSON.parse(localStorage.getItem('pesmire_cart')) || [];
+      const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+      document.getElementById('cartBadge').innerText = totalQty;
+    }
+
+    // 5. 右側抽屜 Drawer 控制與內容渲染
+    function renderCartDrawer() {
+      const cart = JSON.parse(localStorage.getItem('pesmire_cart')) || [];
+      const drawerBody = document.getElementById('drawerBody');
+      const drawerSubtotal = document.getElementById('drawerSubtotal');
+
+      if (cart.length === 0) {
+        drawerBody.innerHTML = '<div class="drawer-empty-msg">your cart is currently empty.</div>';
+        drawerSubtotal.innerText = 'HK$0';
+        return;
+      }
+
+      let total = 0;
+      let html = '';
+
+      cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+
+        html += `
+          <div class="drawer-item">
+            <img src="${item.image}" class="drawer-item-img" alt="${item.name}">
+            <div class="drawer-item-details">
+              <div class="drawer-item-title">${item.name}</div>
+              <div class="drawer-item-meta">${item.color} / size: ${item.size} / qty: ${item.quantity}</div>
+              <div class="drawer-item-price">HK$${itemTotal}</div>
+            </div>
+          </div>
+        `;
+      });
+
+      drawerBody.innerHTML = html;
+      drawerSubtotal.innerText = `HK$${total}`;
+    }
+
+    function openCartDrawer() {
+      renderCartDrawer();
+      document.getElementById('cartDrawer').classList.add('active');
+      document.getElementById('cartOverlay').classList.add('active');
+    }
+
+    function closeCartDrawer() {
+      document.getElementById('cartDrawer').classList.remove('active');
+      document.getElementById('cartOverlay').classList.remove('active');
+    }
+
+    // 6. 清空購物車 Modal 控制
+    function openConfirmModal() {
+      const cart = JSON.parse(localStorage.getItem('pesmire_cart')) || [];
+      if (cart.length === 0) return;
+      document.getElementById('confirmModal').classList.add('active');
+    }
+
+    function closeConfirmModal() {
+      document.getElementById('confirmModal').classList.remove('active');
+    }
+
+    function confirmClearCart() {
+      localStorage.removeItem('pesmire_cart');
+      updateCartBadge();
+      renderCartDrawer();
+      closeConfirmModal();
+    }
+
+    // 7. 載入商品資料並依版面與分類渲染
+    async function loadProducts() {
+      try {
+        const response = await fetch('products.json');
+        const products = await response.json();
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const categoryFilter = urlParams.get('category');
+        const subFilter = urlParams.get('sub');
+        const mainContent = document.getElementById('mainContent');
+
+        let validProducts = products.filter(p => p.imageCount > 0);
+
+        const catConfig = {
+            'top': ['短袖背心', '長袖', '外套'],
+            'bottom': ['短褲', '長褲'],
+            'accessory': ['袋', '戒指', '頸鏈', '皮帶', '鞋'],
+            'set': [],
+            'instock': []
+        };
+
+        // A. 首頁 (Homepage Layout)
+        if (!categoryFilter) {
+            mainContent.innerHTML = '';
+            const mainCategories = ['top', 'bottom', 'set', 'accessory'];
+            
+            mainCategories.forEach(cat => {
+                let catProducts = validProducts.filter(p => p.category && p.category.toLowerCase().trim() === cat);
+                if (catProducts.length > 0) {
+                    // 隨機選取 8 個商品 (4x2 排版)
+                    let preview = catProducts.sort(() => 0.5 - Math.random()).slice(0, 8);
+                    let gridHtml = preview.map(p => generateProductCard(p)).join('');
+                    
+                    mainContent.innerHTML += `
+                      <div class="home-section">
+                        <h2 class="section-title">${cat}</h2>
+                        <div class="product-grid home-grid">${gridHtml}</div>
+                        <div class="more-container">
+                          <a href="?category=${cat}" class="more-btn">more</a>
+                        </div>
+                      </div>
+                    `;
+                }
+            });
+            
+            if (mainContent.innerHTML === '') {
+                mainContent.innerHTML = '<div class="no-products">coming soon... 暫時未有商品</div>';
+            }
+        } 
+        // B. 分類頁面 (Category Page Layout，包含 new, hot, instock 及各細分類)
+        else {
+            const lowerCat = categoryFilter.toLowerCase().trim();
+            
+            let titleText = subFilter ? `${lowerCat === 'instock' ? '現貨專區' : lowerCat} / ${subFilter}` : (lowerCat === 'instock' ? '現貨專區' : lowerCat);
+            let titleHtml = `<h2 class="section-title">${titleText}</h2>`;
+
+            let subNavHtml = '';
+            if (catConfig[lowerCat] && catConfig[lowerCat].length > 0) {
+                subNavHtml = '<div class="sub-category-nav">';
+                subNavHtml += `<a href="?category=${lowerCat}" class="${!subFilter ? 'active' : ''}">all</a>`;
+                catConfig[lowerCat].forEach(sub => {
+                   subNavHtml += `<a href="?category=${lowerCat}&sub=${sub}" class="${subFilter === sub ? 'active' : ''}">${sub}</a>`;
+                });
+                subNavHtml += '</div>';
+            }
+
+            // 特殊邏輯：new 分頁 (自動抓取「每個分類與細分類」最新嘅 8 個商品)
+            if (lowerCat === 'new') {
+                let newProductsMap = new Map();
+
+                // 遍歷所有主分類與細分類
+                Object.keys(catConfig).forEach(cat => {
+                    const subs = catConfig[cat];
+                    if (subs.length > 0) {
+                        subs.forEach(sub => {
+                            let subProds = validProducts.filter(p => 
+                                p.category && p.category.toLowerCase().trim() === cat &&
+                                p.subCategory && p.subCategory.toLowerCase().trim() === sub.toLowerCase().trim()
+                            );
+                            subProds.sort((a, b) => getIdNumber(b.id) - getIdNumber(a.id));
+                            subProds.slice(0, 8).forEach(p => newProductsMap.set(p.id, p));
+                        });
+                    } else {
+                        let catProds = validProducts.filter(p => p.category && p.category.toLowerCase().trim() === cat);
+                        catProds.sort((a, b) => getIdNumber(b.id) - getIdNumber(a.id));
+                        catProds.slice(0, 8).forEach(p => newProductsMap.set(p.id, p));
+                    }
+                });
+
+                currentCategoryProducts = Array.from(newProductsMap.values());
+            } 
+            // 一般分類頁面邏輯
+            else {
+                currentCategoryProducts = validProducts.filter(p => p.category && p.category.toLowerCase().trim() === lowerCat);
+                if (subFilter) {
+                    currentCategoryProducts = currentCategoryProducts.filter(p => p.subCategory && p.subCategory.toLowerCase().trim() === subFilter.toLowerCase().trim());
+                }
+            }
+
+            // 加入篩選器下拉選單 HTML
+            let filterHtml = `
+              <div class="filter-container">
+                <span class="filter-label">排序 / sort by:</span>
+                <select id="sortSelect" class="filter-select" onchange="applySorting()">
+                  <option value="newest">由新至舊</option>
+                  <option value="oldest">由舊至新</option>
+                  <option value="price-high">價錢由高至低</option>
+                  <option value="price-low">價錢由低至高</option>
+                </select>
+              </div>
+            `;
+
+            // 預設套用「由新至舊」排序
+            let sortedProducts = sortProducts(currentCategoryProducts, 'newest');
+
+            let gridHtml = '';
+            if (sortedProducts.length === 0) {
+                gridHtml = '<div class="no-products">coming soon... 此分類暫時未有商品</div>';
+            } else {
+                gridHtml = `<div class="product-grid category-grid" id="categoryProductGrid">${sortedProducts.map(p => generateProductCard(p)).join('')}</div>`;
+            }
+
+            mainContent.innerHTML = titleHtml + subNavHtml + filterHtml + gridHtml;
+        }
+
+      } catch (error) {
+        console.error("無法載入商品資料:", error);
+      }
+    }
+    
+    // 初始化執行
+    loadProducts();
+    updateCartBadge();
+  </script>
+</body>
+</html>
