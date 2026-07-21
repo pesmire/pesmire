@@ -366,6 +366,8 @@
         <div class="nav-item"><a href="index.html?category=hot">hot</a></div>
         <div class="nav-item"><a href="index.html?category=instock">現貨專區</a></div>
         <div class="nav-item"><a href="index.html?category=new">new</a></div>
+        <!-- 🆕 已新增：artist同款 大分類 -->
+        <div class="nav-item"><a href="index.html?category=artist">artist同款</a></div>
 
         <div class="nav-item">
           <a href="index.html?category=top">top</a>
@@ -389,7 +391,6 @@
         <div class="nav-item">
           <a href="index.html?category=accessory">accessory</a>
           <div class="dropdown">
-            <!-- 🆕 已新增：帽 -->
             <a href="index.html?category=accessory&sub=帽">帽</a>
             <a href="index.html?category=accessory&sub=袋">袋</a>
             <a href="index.html?category=accessory&sub=戒指">戒指</a>
@@ -595,26 +596,34 @@
         const catConfig = {
             'top': ['短袖背心', '長袖', '外套'],
             'bottom': ['短褲', '長褲'],
-            'accessory': ['帽', '袋', '戒指', '頸鏈', '皮帶', '鞋'], // 🆕 已新增：帽
+            'accessory': ['帽', '袋', '戒指', '頸鏈', '皮帶', '鞋'],
             'set': [],
-            'instock': []
+            'instock': [],
+            'artist': [] // 🆕 已新增：artist同款
         };
 
         // A. 首頁 (Homepage Layout)
         if (!categoryFilter) {
             mainContent.innerHTML = '';
-            const mainCategories = ['top', 'bottom', 'set', 'accessory'];
+            const mainCategories = ['top', 'bottom', 'set', 'accessory', 'artist'];
             
             mainCategories.forEach(cat => {
-                let catProducts = validProducts.filter(p => p.category && p.category.toLowerCase().trim() === cat);
+                let catProducts = validProducts.filter(p => {
+                    if (!p.category) return false;
+                    const c = p.category.toLowerCase().trim();
+                    if (cat === 'artist') return c === 'artist' || c === 'artist同款' || p.isArtist === true;
+                    return c === cat;
+                });
+
                 if (catProducts.length > 0) {
                     // 隨機選取 8 個商品 (4x2 排版)
                     let preview = catProducts.sort(() => 0.5 - Math.random()).slice(0, 8);
                     let gridHtml = preview.map(p => generateProductCard(p)).join('');
+                    let catTitle = cat === 'artist' ? 'artist同款' : cat;
                     
                     mainContent.innerHTML += `
                       <div class="home-section">
-                        <h2 class="section-title">${cat}</h2>
+                        <h2 class="section-title">${catTitle}</h2>
                         <div class="product-grid home-grid">${gridHtml}</div>
                         <div class="more-container">
                           <a href="?category=${cat}" class="more-btn">more</a>
@@ -628,11 +637,15 @@
                 mainContent.innerHTML = '<div class="no-products">coming soon... 暫時未有商品</div>';
             }
         } 
-        // B. 分類頁面 (Category Page Layout，包含 new, hot, instock 及各細分類)
+        // B. 分類頁面 (Category Page Layout，包含 new, hot, instock, artist 及各細分類)
         else {
             const lowerCat = categoryFilter.toLowerCase().trim();
             
-            let titleText = subFilter ? `${lowerCat === 'instock' ? '現貨專區' : lowerCat} / ${subFilter}` : (lowerCat === 'instock' ? '現貨專區' : lowerCat);
+            let displayTitle = lowerCat;
+            if (lowerCat === 'instock') displayTitle = '現貨專區';
+            else if (lowerCat === 'artist' || lowerCat === 'artist同款') displayTitle = 'artist同款';
+
+            let titleText = subFilter ? `${displayTitle} / ${subFilter}` : displayTitle;
             let titleHtml = `<h2 class="section-title">${titleText}</h2>`;
 
             let subNavHtml = '';
@@ -649,7 +662,6 @@
             if (lowerCat === 'new') {
                 let newProductsMap = new Map();
 
-                // 遍歷所有主分類與細分類
                 Object.keys(catConfig).forEach(cat => {
                     const subs = catConfig[cat];
                     if (subs.length > 0) {
@@ -670,9 +682,17 @@
 
                 currentCategoryProducts = Array.from(newProductsMap.values());
             } 
-            // 一般分類頁面邏輯
+            // 一般分類頁面邏輯 (包含 artist 同款支援)
             else {
-                currentCategoryProducts = validProducts.filter(p => p.category && p.category.toLowerCase().trim() === lowerCat);
+                currentCategoryProducts = validProducts.filter(p => {
+                    if (!p.category) return false;
+                    const c = p.category.toLowerCase().trim();
+                    if (lowerCat === 'artist' || lowerCat === 'artist同款') {
+                        return c === 'artist' || c === 'artist同款' || p.isArtist === true;
+                    }
+                    return c === lowerCat;
+                });
+
                 if (subFilter) {
                     currentCategoryProducts = currentCategoryProducts.filter(p => p.subCategory && p.subCategory.toLowerCase().trim() === subFilter.toLowerCase().trim());
                 }
