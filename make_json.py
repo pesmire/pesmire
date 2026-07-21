@@ -24,7 +24,7 @@ def get_category_by_prefix(folder_id):
         return "bottom", "短褲"
     elif prefix.startswith('f'):
         return "bottom", "長褲"
-    elif prefix.startswith('j'):  # 新增：外套
+    elif prefix.startswith('j'):
         return "top", "外套"
     elif prefix.startswith('p'):
         return "set", ""
@@ -32,6 +32,8 @@ def get_category_by_prefix(folder_id):
         return "top", "短袖背心"
     elif prefix.startswith('l'):
         return "top", "長袖"
+    elif prefix.startswith('c'):  # 🆕 新增：c 開頭 -> 配飾 (accessory) -> 帽
+        return "accessory", "帽"
     elif prefix.startswith('a'):
         return "accessory", "其他"
     else:
@@ -58,7 +60,7 @@ def generate_products_json():
     updated_products_list = []
     valid_extensions = ('.webp', '.jpg', '.jpeg', '.png')
 
-    # 2. 掃描 images/ 裡面的單層商品資料夾 (例如 images/j001, images/df002)
+    # 2. 掃描 images/ 裡面的單層商品資料夾 (例如 images/j001, images/c001)
     folders = [f for f in os.listdir(IMAGES_DIR) if os.path.isdir(os.path.join(IMAGES_DIR, f))]
     folders.sort()
 

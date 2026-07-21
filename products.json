@@ -3,8 +3,8 @@
     "id": "c001",
     "name": "c001 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 22,
     "colors": [
       "black",
@@ -25,8 +25,8 @@
     "id": "c002",
     "name": "c002 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 20,
     "colors": [
       "black",
@@ -47,8 +47,8 @@
     "id": "c003",
     "name": "c003 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 1,
     "colors": [
       "black",
@@ -69,8 +69,8 @@
     "id": "c004",
     "name": "c004 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 2,
     "colors": [
       "black",
@@ -91,8 +91,8 @@
     "id": "c005",
     "name": "c005 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 1,
     "colors": [
       "black",
@@ -113,8 +113,8 @@
     "id": "c006",
     "name": "c006 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 1,
     "colors": [
       "black",
@@ -135,8 +135,8 @@
     "id": "c007",
     "name": "c007 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 1,
     "colors": [
       "black",
@@ -157,8 +157,8 @@
     "id": "c008",
     "name": "c008 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 4,
     "colors": [
       "black",
@@ -179,8 +179,8 @@
     "id": "c009",
     "name": "c009 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 4,
     "colors": [
       "black",
@@ -201,8 +201,8 @@
     "id": "c010",
     "name": "c010 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 117,
     "colors": [
       "black",
@@ -223,8 +223,8 @@
     "id": "c011",
     "name": "c011 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 7,
     "colors": [
       "black",
@@ -245,8 +245,8 @@
     "id": "c012",
     "name": "c012 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 5,
     "colors": [
       "black",
@@ -267,8 +267,8 @@
     "id": "c013",
     "name": "c013 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 33,
     "colors": [
       "black",
@@ -289,8 +289,8 @@
     "id": "c014",
     "name": "c014 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 13,
     "colors": [
       "black",
@@ -311,8 +311,8 @@
     "id": "c015",
     "name": "c015 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 13,
     "colors": [
       "black",
@@ -333,8 +333,8 @@
     "id": "c016",
     "name": "c016 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 12,
     "colors": [
       "black",
@@ -355,8 +355,8 @@
     "id": "c017",
     "name": "c017 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 14,
     "colors": [
       "black",
@@ -377,8 +377,8 @@
     "id": "c018",
     "name": "c018 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 17,
     "colors": [
       "black",
@@ -399,8 +399,8 @@
     "id": "c019",
     "name": "c019 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 13,
     "colors": [
       "black",
@@ -421,8 +421,8 @@
     "id": "c020",
     "name": "c020 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 12,
     "colors": [
       "black",
@@ -443,8 +443,8 @@
     "id": "c021",
     "name": "c021 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 11,
     "colors": [
       "black",
@@ -465,8 +465,8 @@
     "id": "c022",
     "name": "c022 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 14,
     "colors": [
       "black",
@@ -487,8 +487,8 @@
     "id": "c023",
     "name": "c023 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 16,
     "colors": [
       "black",
@@ -509,8 +509,8 @@
     "id": "c024",
     "name": "c024 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 6,
     "colors": [
       "black",
@@ -531,8 +531,8 @@
     "id": "c025",
     "name": "c025 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 17,
     "colors": [
       "black",
@@ -553,8 +553,8 @@
     "id": "c026",
     "name": "c026 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 5,
     "colors": [
       "black",
@@ -575,8 +575,8 @@
     "id": "c027",
     "name": "c027 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 39,
     "colors": [
       "black",
@@ -597,8 +597,8 @@
     "id": "c028",
     "name": "c028 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 6,
     "colors": [
       "black",
@@ -619,8 +619,8 @@
     "id": "c029",
     "name": "c029 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 6,
     "colors": [
       "black",
@@ -641,8 +641,8 @@
     "id": "c030",
     "name": "c030 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 6,
     "colors": [
       "black",
@@ -663,8 +663,8 @@
     "id": "c031",
     "name": "c031 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 6,
     "colors": [
       "black",
@@ -685,8 +685,8 @@
     "id": "c032",
     "name": "c032 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 6,
     "colors": [
       "black",
@@ -707,8 +707,8 @@
     "id": "c034",
     "name": "c034 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 33,
     "colors": [
       "black",
@@ -729,8 +729,8 @@
     "id": "c039",
     "name": "c039 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 14,
     "colors": [
       "black",
@@ -751,8 +751,8 @@
     "id": "c040",
     "name": "c040 item",
     "price": 480,
-    "category": "other",
-    "subCategory": "other",
+    "category": "accessory",
+    "subCategory": "帽",
     "imageCount": 42,
     "colors": [
       "black",
@@ -12127,7 +12127,7 @@
     "price": 480,
     "category": "top",
     "subCategory": "短袖背心",
-    "imageCount": 46,
+    "imageCount": 22,
     "colors": [
       "black",
       "white"
@@ -12149,7 +12149,7 @@
     "price": 480,
     "category": "top",
     "subCategory": "短袖背心",
-    "imageCount": 43,
+    "imageCount": 17,
     "colors": [
       "black",
       "white"
@@ -12171,7 +12171,7 @@
     "price": 480,
     "category": "top",
     "subCategory": "短袖背心",
-    "imageCount": 36,
+    "imageCount": 26,
     "colors": [
       "black",
       "white"
@@ -12193,7 +12193,7 @@
     "price": 480,
     "category": "top",
     "subCategory": "短袖背心",
-    "imageCount": 52,
+    "imageCount": 21,
     "colors": [
       "black",
       "white"
@@ -12215,7 +12215,7 @@
     "price": 480,
     "category": "top",
     "subCategory": "短袖背心",
-    "imageCount": 25,
+    "imageCount": 22,
     "colors": [
       "black",
       "white"
@@ -12237,7 +12237,7 @@
     "price": 480,
     "category": "top",
     "subCategory": "短袖背心",
-    "imageCount": 41,
+    "imageCount": 31,
     "colors": [
       "black",
       "white"
@@ -12259,7 +12259,7 @@
     "price": 480,
     "category": "top",
     "subCategory": "短袖背心",
-    "imageCount": 53,
+    "imageCount": 37,
     "colors": [
       "black",
       "white"
@@ -12281,7 +12281,7 @@
     "price": 480,
     "category": "top",
     "subCategory": "短袖背心",
-    "imageCount": 18,
+    "imageCount": 16,
     "colors": [
       "black",
       "white"
@@ -12303,7 +12303,7 @@
     "price": 480,
     "category": "top",
     "subCategory": "短袖背心",
-    "imageCount": 21,
+    "imageCount": 16,
     "colors": [
       "black",
       "white"
