@@ -353,6 +353,99 @@
         .product-info { flex-direction: column; gap: 5px; }
         .filter-container { justify-content: center; }
     }
+
+    /* 🆕 8. 新增：極簡頁腳 (FOOTER) 樣式 */
+    footer {
+        background-color: #050505;
+        color: #FFFFFF;
+        padding: 80px 5% 40px 5%;
+        border-top: 1px solid #111;
+        font-family: 'Jost', sans-serif;
+    }
+
+    .footer-container {
+        max-width: 1800px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 50px;
+        margin-bottom: 60px;
+    }
+
+    .footer-brand { flex: 1; min-width: 220px; }
+    .footer-logo { font-size: 22px; font-weight: 300; letter-spacing: 2px; text-transform: lowercase; display: block; margin-bottom: 15px; }
+    .footer-desc { font-size: 11px; font-weight: 200; color: #888888; letter-spacing: 0.1em; line-height: 1.8; }
+
+    .footer-links { display: flex; gap: 60px; flex-wrap: wrap; }
+    .footer-col h4 { font-size: 11px; font-weight: 400; letter-spacing: 0.2em; text-transform: lowercase; color: #FFFFFF; margin-bottom: 20px; }
+    .footer-col a { display: block; font-size: 11px; font-weight: 200; color: #888888; margin-bottom: 12px; letter-spacing: 0.1em; text-transform: lowercase; }
+    .footer-col a:hover { color: #FFFFFF; opacity: 1; }
+
+    .footer-bottom {
+        max-width: 1800px;
+        margin: 0 auto;
+        padding-top: 30px;
+        border-top: 1px solid #1a1a1a;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 10px;
+        color: #555555;
+        letter-spacing: 0.15em;
+        text-transform: lowercase;
+    }
+
+    /* 🆕 9. 新增：搜尋彈窗 (SEARCH MODAL) & 頂部按鈕 樣式 */
+    .header-actions { display: flex; align-items: center; gap: 20px; }
+
+    .search-icon-link { color: #FFFFFF; cursor: pointer; display: flex; align-items: center; }
+    .search-icon-svg { width: 18px; height: 18px; stroke: #FFFFFF; stroke-width: 1.2; fill: none; transition: transform 0.3s ease; }
+    .search-icon-link:hover .search-icon-svg { transform: scale(1.1); }
+
+    .search-modal-overlay {
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background-color: rgba(5, 5, 5, 0.92); z-index: 2000;
+        display: flex; flex-direction: column; align-items: center; padding-top: 100px;
+        opacity: 0; visibility: hidden; transition: all 0.3s ease;
+    }
+    .search-modal-overlay.active { opacity: 1; visibility: visible; }
+
+    .search-modal-box { width: 90%; max-width: 800px; text-align: center; }
+    .search-input-wrapper { position: relative; border-bottom: 1px solid #444; padding-bottom: 10px; margin-bottom: 40px; }
+    .search-input {
+        width: 100%; background: transparent; border: none; outline: none;
+        color: #FFFFFF; font-family: 'Jost', sans-serif; font-size: 20px; font-weight: 200;
+        letter-spacing: 0.15em; text-align: center;
+    }
+    .search-close-btn {
+        position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+        background: none; border: none; color: #888; font-size: 24px; cursor: pointer; transition: color 0.3s;
+    }
+    .search-close-btn:hover { color: #FFF; }
+    
+    .search-results-container { max-height: 60vh; overflow-y: auto; padding: 20px 0; }
+
+    /* 🆕 10. 新增：返回頂部按鈕 (BACK TO TOP) 樣式 */
+    .back-to-top-btn {
+        position: fixed; bottom: 30px; right: 30px; width: 40px; height: 40px;
+        background-color: #050505; color: #FFFFFF; border: 1px solid #333333;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 900;
+        font-size: 14px;
+    }
+    .back-to-top-btn.visible { opacity: 0.8; visibility: visible; }
+    .back-to-top-btn:hover { opacity: 1; background-color: #111111; }
+
+    /* 🆕 11. 新增：Toast 輕提示樣式 */
+    .toast-notification {
+        position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(20px);
+        background-color: #111111; color: #FFFFFF; padding: 12px 25px;
+        font-size: 11px; font-weight: 300; letter-spacing: 0.15em; text-transform: lowercase;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2); opacity: 0; visibility: hidden;
+        transition: all 0.3s ease; z-index: 3000; border: 1px solid #333;
+    }
+    .toast-notification.active { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
@@ -401,14 +494,24 @@
         </div>
       </nav>
 
-      <!-- 白線圖案購物車 Logo -->
-      <div class="cart-icon-link" onclick="openCartDrawer()" title="shopping cart">
-        <svg class="cart-icon-svg" viewBox="0 0 24 24">
-          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <path d="M16 10a4 4 0 0 1-8 0"></path>
-        </svg>
-        <span class="cart-badge" id="cartBadge">0</span>
+      <div class="header-actions">
+        <!-- 🆕 新增：搜尋圖示按鈕 -->
+        <div class="search-icon-link" onclick="openSearchModal()" title="search">
+          <svg class="search-icon-svg" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+
+        <!-- 白線圖案購物車 Logo -->
+        <div class="cart-icon-link" onclick="openCartDrawer()" title="shopping cart">
+          <svg class="cart-icon-svg" viewBox="0 0 24 24">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="cart-badge" id="cartBadge">0</span>
+        </div>
       </div>
     </div>
   </header>
@@ -452,8 +555,70 @@
     </div>
   </div>
 
+  <!-- 🆕 新增：搜尋彈窗 Modal -->
+  <div class="search-modal-overlay" id="searchModal" onclick="closeSearchModal(event)">
+    <div class="search-modal-box" onclick="event.stopPropagation()">
+      <div class="search-input-wrapper">
+        <input type="text" id="searchInput" class="search-input" placeholder="search items..." onkeyup="handleSearchInput(event)">
+        <button class="search-close-btn" onclick="closeSearchModal()">&times;</button>
+      </div>
+      <div class="search-results-container" id="searchResultsContainer">
+        <!-- 搜尋結果區塊 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 🆕 新增：極簡頁腳 (FOOTER) -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-brand">
+        <span class="footer-logo">pesmire.</span>
+        <p class="footer-desc">curated contemporary minimalist wardrobe.<br>timeless designs for modern lifestyle.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>shop</h4>
+          <a href="index.html?category=new">new arrivals</a>
+          <a href="index.html?category=hot">hot items</a>
+          <a href="index.html?category=instock">現貨專區</a>
+          <a href="index.html?category=artist">artist同款</a>
+        </div>
+        <div class="footer-col">
+          <h4>categories</h4>
+          <a href="index.html?category=top">tops</a>
+          <a href="index.html?category=bottom">bottoms</a>
+          <a href="index.html?category=set">sets</a>
+          <a href="index.html?category=accessory">accessories</a>
+        </div>
+        <div class="footer-col">
+          <h4>help & info</h4>
+          <a href="#">shipping & delivery</a>
+          <a href="#">returns & exchange</a>
+          <a href="#">privacy policy</a>
+          <a href="#">terms of service</a>
+        </div>
+        <div class="footer-col">
+          <h4>connect</h4>
+          <a href="https://instagram.com" target="_blank">instagram</a>
+          <a href="mailto:info@pesmire.com">contact us</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; pesmire. all rights reserved.</span>
+      <span>hong kong</span>
+    </div>
+  </footer>
+
+  <!-- 🆕 新增：返回頂部按鈕 -->
+  <button class="back-to-top-btn" id="backToTopBtn" onclick="scrollToTop()" title="back to top">&uarr;</button>
+
+  <!-- 🆕 新增：Toast 提示訊息 -->
+  <div class="toast-notification" id="toastNotification"></div>
+
   <script>
     let currentCategoryProducts = []; // 儲存當前分類過濾後的商品清單
+    let allLoadedProducts = []; // 🆕 新增：備份所有商品資料供全站搜尋使用
 
     function generateProductCard(product) {
        return `
@@ -578,6 +743,7 @@
       updateCartBadge();
       renderCartDrawer();
       closeConfirmModal();
+      showToast("cart cleared / 購物車已清空");
     }
 
     // 7. 載入商品資料並依版面與分類渲染
@@ -586,6 +752,8 @@
         const response = await fetch('products.json');
         const products = await response.json();
         
+        allLoadedProducts = products; // 🆕 備份全站資料供搜尋使用
+
         const urlParams = new URLSearchParams(window.location.search);
         const categoryFilter = urlParams.get('category');
         const subFilter = urlParams.get('sub');
@@ -727,6 +895,66 @@
       } catch (error) {
         console.error("無法載入商品資料:", error);
       }
+    }
+
+    // 🆕 8. 新增：全站即時搜尋功能
+    function openSearchModal() {
+      const modal = document.getElementById('searchModal');
+      const input = document.getElementById('searchInput');
+      modal.classList.add('active');
+      setTimeout(() => input.focus(), 100);
+    }
+
+    function closeSearchModal(event) {
+      if (!event || event.target.classList.contains('search-modal-overlay') || event.target.classList.contains('search-close-btn')) {
+        document.getElementById('searchModal').classList.remove('active');
+      }
+    }
+
+    function handleSearchInput(e) {
+      const query = e.target.value.toLowerCase().trim();
+      const container = document.getElementById('searchResultsContainer');
+
+      if (!query) {
+        container.innerHTML = '';
+        return;
+      }
+
+      const matched = allLoadedProducts.filter(p => 
+        (p.name && p.name.toLowerCase().includes(query)) ||
+        (p.id && p.id.toLowerCase().includes(query)) ||
+        (p.category && p.category.toLowerCase().includes(query))
+      );
+
+      if (matched.length === 0) {
+        container.innerHTML = '<div style="color: #888; font-size: 12px; margin-top: 30px;">no matching products found</div>';
+      } else {
+        container.innerHTML = `<div class="product-grid category-grid">${matched.slice(0, 9).map(p => generateProductCard(p)).join('')}</div>`;
+      }
+    }
+
+    // 🆕 9. 新增：返回頂部與 Scroll 監聽
+    window.addEventListener('scroll', () => {
+      const btn = document.getElementById('backToTopBtn');
+      if (window.scrollY > 400) {
+        btn.classList.add('visible');
+      } else {
+        btn.classList.remove('visible');
+      }
+    });
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 🆕 10. 新增：Toast 提示訊息彈窗
+    function showToast(msg) {
+      const toast = document.getElementById('toastNotification');
+      toast.innerText = msg;
+      toast.classList.add('active');
+      setTimeout(() => {
+        toast.classList.remove('active');
+      }, 3000);
     }
     
     // 初始化執行
