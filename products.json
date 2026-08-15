@@ -28,7 +28,7 @@
     "subCategory": "帽",
     "imageCount": 1,
     "colors": [
-      "black(現貨*1)",
+      "black 現貨*1",
       "brown"
     ],
     "sizes": [
@@ -50,11 +50,11 @@
     "subCategory": "帽",
     "imageCount": 18,
     "colors": [
-      "pigment charcoal(現貨*1)",
+      "pigment charcoal 現貨*1",
       "pigment smoke",
       "green",
-      "black(現貨*1)",
-      "navy(現貨*1)",
+      "black 現貨*1",
+      "navy 現貨*1",
       "pink",
       "red",
       "blue",
@@ -326,7 +326,7 @@
     "subCategory": "短褲",
     "imageCount": 11,
     "colors": [
-      "black（現貨*1）",
+      "black 現貨*1",
       "grey"
     ],
     "sizes": [
@@ -527,7 +527,7 @@
     "subCategory": "短褲",
     "imageCount": 36,
     "colors": [
-      "black（S現貨*1）",
+      "black 現貨S*1",
       "mid blue",
       "white"
     ],
@@ -613,7 +613,7 @@
     "colors": [
       "beige",
       "brown",
-      "grey(現貨*1）"
+      "grey 現貨*1"
     ],
     "sizes": [
       "free"
@@ -932,7 +932,7 @@
     "imageCount": 29,
     "colors": [
       "black",
-      "beige(現貨 M*1 L*1)",
+      "beige 現貨 M*1 L*1",
       "charcoal"
     ],
     "sizes": [
@@ -1508,7 +1508,7 @@
     "imageCount": 34,
     "colors": [
       "black",
-      "beige(M現貨*1)",
+      "beige 現貨M*1",
       "grey",
       "brown"
     ],
@@ -1685,7 +1685,7 @@
     "subCategory": "長褲",
     "imageCount": 20,
     "colors": [
-      "blue(現貨 M*1 L*1)",
+      "blue 現貨 M*1 L*1",
       "grey",
       "black"
     ],
@@ -1750,8 +1750,8 @@
     "subCategory": "長褲",
     "imageCount": 29,
     "colors": [ 
-      "black(現貨 S*1)" ,
-      "blue(現貨 S*1 M*1）"
+      "black 現貨 S*1" ,
+      "blue 現貨 S*1 M*1"
     ],
     "sizes": [
       "S",
@@ -2507,7 +2507,7 @@
     "imageCount": 13,
     "colors": [
       "black",
-      "blue(現貨 M*1)"
+      "blue 現貨 M*1"
     ],
     "sizes": [
       "M",
@@ -2574,7 +2574,7 @@
     "subCategory": "長褲",
     "imageCount": 39,
     "colors": [
-      "beige(現貨 S*1)",
+      "beige 現貨 S*1",
       "khaki",
       "charcoal"
     ],
@@ -2712,7 +2712,7 @@
     "subCategory": "長褲",
     "imageCount": 27,
     "colors": [
-      "black(現貨 SML*1)",
+      "black 現貨 SML*1",
       "white"
     ],
     "sizes": [
@@ -3137,7 +3137,7 @@
       "black denim",
       "white",
       "light blue",
-      "mid blue(現貨 M*1）"
+      "mid blue 現貨 M*1"
     ],
     "sizes": [
       "S",
@@ -3271,7 +3271,7 @@
     "imageCount": 30,
     "colors": [
       "black",
-      "grey(現貨*1）"
+      "grey 現貨*1"
     ],
     "sizes": [
       "free"
@@ -3383,8 +3383,8 @@
     "subCategory": "長褲",
     "imageCount": 23,
     "colors": [
-      "black(現貨 M*1)",
-      "grey(現貨 M*1)"
+      "black 現貨 M*1",
+      "grey 現貨 M*1"
     ],
     "sizes": [
       "S",
@@ -5074,10 +5074,10 @@
     "subCategory": "",
     "imageCount": 23,
     "colors": [
-      "black set",
+      "black set 現貨*1",
       "white set",
       "grey set",
-      "單外套 black（現貨*1）",
+      "單外套 black",
       "單外套 white",
       "單外套 grey",
       "單長褲 black",
@@ -5308,7 +5308,7 @@
     "imageCount": 10,
     "colors": [
       "black",
-      "white(現貨*1)"
+      "white 現貨*1"
     ],
     "sizes": [
       "free"
@@ -5562,7 +5562,7 @@
     "imageCount": 23,
     "colors": [
       "black",
-      "white(現貨*1)",
+      "white 現貨*1",
       "beige"
     ],
     "sizes": [
@@ -6544,7 +6544,7 @@
   {
     "id": "t161",
     "name": "超靚質感美式印字T✨🥹",
-    "price": 480,
+    "price": 169,
     "category": "top",
     "subCategory": "短袖背心",
     "imageCount": 16,
@@ -7395,7 +7395,7 @@
     "subCategory": "短袖背心",
     "imageCount": 18,
     "colors": [
-      "dark grey(現貨*2)",
+      "dark grey 現貨*2",
       "light grey",
       "navy",
       "red"
@@ -7542,7 +7542,7 @@
     "imageCount": 15,
     "colors": [
       "black",
-      "white(現貨*1）",
+      "white 現貨*1",
       "pink"
     ],
     "sizes": [

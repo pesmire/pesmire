@@ -635,7 +635,7 @@
         <div class="nav-item"><a href="index.html?category=instock">現貨專區</a></div>
         <div class="nav-item"><a href="index.html?category=new">new</a></div>
         
-        <!-- 🆕 新增：artist同款 大分類 -->
+        <!-- artist同款 大分類 -->
         <div class="nav-item"><a href="index.html?category=artist">artist同款</a></div>
 
         <div class="nav-item">
@@ -785,7 +785,7 @@
       document.getElementById('cartBadge').innerText = totalQty;
     }
 
-    // 2. 載入商品資料
+    // 2. 載入商品資料 (含 Category 陣列安全轉型及 Color 庫存雜訊清理)
     async function loadProductDetails() {
       if (!productId) return;
 
@@ -799,14 +799,17 @@
           document.getElementById('prodPrice').innerText = `HK$${currentProduct.price}`;
           
           if (currentProduct.category) {
+            const rawCat = currentProduct.category;
+            const mainCat = Array.isArray(rawCat) ? rawCat[0] : rawCat;
             const subCat = currentProduct.subCategory || currentProduct.subcategory || currentProduct.sub_category;
-            const catLabel = subCat ? `${currentProduct.category} / ${subCat}` : currentProduct.category;
-            document.getElementById('prodCategory').innerText = catLabel.toLowerCase();
+            const catLabel = subCat ? `${mainCat} / ${subCat}` : mainCat;
+            document.getElementById('prodCategory').innerText = (catLabel || 'pesmire collection').toLowerCase();
           }
 
-          // 載入顏色
+          // 載入顏色 (自動淨化字串中的庫存括號備註，例：'dark grey(現貨*2)' -> 'dark grey')
           const colorSelect = document.getElementById('colorSelect');
-          const colors = currentProduct.colors || ["standard"];
+          const rawColors = currentProduct.colors || ["standard"];
+          const colors = rawColors.map(c => c.replace(/[\(（].*?[\)）]/g, '').trim());
           colorSelect.innerHTML = colors.map(c => `<option value="${c}">${c}</option>`).join('');
 
           // 載入 Size
