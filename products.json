@@ -1301,7 +1301,25 @@
       "上腳超顯腳長😭男女着都好好睇🫰🏻"
     ]
   },
-  
+  {
+    "id": "df110",
+    "name": "超靚寬鬆皮pocket反摺七分牛仔褲✨🥹",
+    "price": 249,
+    "category": ["bottom","hot"],
+    "subCategory": "短褲",
+    "imageCount": 17,
+    "colors": [
+      "blue denim"
+    ],
+    "sizes": [
+      "free"
+    ],
+    "description": [
+      "超高質itemsss🔥點着到襯到💯",
+      "超有質感❕人人都輕鬆carry",
+      "男女着都好好睇🫰🏻"
+    ]
+  },
   {
     "id": "df111",
     "name": "超靚寬鬆白色印花pocket七分工裝褲✨🥹",
@@ -2211,29 +2229,7 @@
       "男女通用itemsss‼️design超靚🙌🏻🔥"
     ]
   },
-  {
-    "id": "f049",
-    "name": "正版seventeen S.Coups崔勝哲同款反design牛仔褲🔥",
-    "price": 299,
-    "category": ["bottom","artist"],
-    "subCategory": "長褲",
-    "imageCount": 25,
-    "colors": [
-      "black",
-      "blue"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L"
-    ],
-    "description": [
-      "呢款可以話係唔怕撞款🫶🏻真係靚到傻🤯",
-      "反design已經超吸睛🥹啲detail位仲要咁靚😭",
-      "仲要平民價明星同款‼️",
-      "呢款無論鍾唔鍾意seventeen都必收💯男女通用🔥✨"
-    ]
-  },
+
   {
     "id": "f050",
     "name": "超靚微彎刀深打褶尼龍西褲✨🥹",
@@ -2764,8 +2760,8 @@
   {
     "id": "f120",
     "name": "超靚簡單大印字索繩棉褲✨",
-    "price": 299,
-    "category": "bottom",
+    "price": 249,
+    "category": ["bottom","hot"],
     "subCategory": "長褲",
     "imageCount": 57,
     "colors": [
@@ -3078,7 +3074,7 @@
     "price": 329,
     "category": "bottom",
     "subCategory": "長褲",
-    "imageCount": 22,
+    "imageCount": 23,
     "colors": [
       "mid blue",
       "black blue"
@@ -4623,31 +4619,7 @@
       "薄薄地唔係太熱🫰🏻啱晒做冷氣褸🙂‍↕️"
     ]
   },
-  {
-    "id": "j088",
-    "name": "正版 txt休寧凱 姜太顯 xlov加藤暖琉 nowz jinhyuk 同款✨超靚刺繡做舊牛仔棒球外套🔥",
-    "price": 329,
-    "category": ["top","artist"],
-    "subCategory": "外套",
-    "imageCount": 18,
-    "colors": [
-      "black",
-      "grey",
-      "light blue",
-      "blue denim"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L"
-    ],
-    "description": [
-      "呢款真係好好睇🥹🔥男女通用‼️店主自留款😭",
-      "牛仔色超靚✨心口拼字仲有做舊破損蘇邊details😱",
-      "呢件真係犯晒規🥵有特色得來又唔浮誇💯🫶🏻",
-      "唔使諗點襯 因為點襯都好睇😭✨🫰🏻呢款夏日必收💯"
-    ]
-  },
+  
   {
     "id": "j089",
     "name": "超靚輕薄暗紋長袖襯衫✨🔥",
@@ -7880,7 +7852,27 @@
       "男女都啱着✨真係超抵玩"
     ]
   },
-  
+  {
+    "id": "t239",
+    "name": "超靚水洗特別剪裁破損設計T✨",
+    "price": 239,
+    "category": ["top","hot"],
+    "subCategory": "短袖背心",
+    "imageCount": 24,
+    "colors": [
+      "charcoal",
+      "light grey"
+
+    ],
+    "sizes": [
+      "free"
+    ],
+    "description": [
+      "超有質感🫰🏻超好睇又易襯🔥",
+      "有特色得嚟唔會太誇張🙌🏻超好襯😭",
+      "男女都啱着✨真係超抵玩"
+    ]
+  },
   {
     "id": "t240",
     "name": "超靚飛機扣微短版輕薄復古色格紋短袖恤衫✨🔥",
