@@ -407,7 +407,7 @@
         opacity: 1;
     }
 
-    /* 4. 新增：右側購物車預覽抽屜 (SIDE CART DRAWER) */
+    /* 4. 右側購物車預覽抽屜 (SIDE CART DRAWER) */
     .cart-drawer-overlay {
         position: fixed;
         top: 0;
@@ -559,7 +559,7 @@
         font-size: 10px;
     }
 
-    /* 5. 新增：清空購物車二次確認 Modal 彈窗 */
+    /* 5. 清空購物車二次確認 Modal 彈窗 */
     .confirm-modal-overlay {
         position: fixed;
         top: 0;
@@ -670,7 +670,7 @@
         </div>
       </nav>
 
-      <!-- 白線圖案購物車 Logo (點擊打開右側 Drawer) -->
+      <!-- 白線圖案購物車 Logo -->
       <div class="cart-icon-link" onclick="openCartDrawer()" title="shopping cart">
         <svg class="cart-icon-svg" viewBox="0 0 24 24">
           <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -735,7 +735,7 @@
     </div>
   </main>
 
-  <!-- 右側購物車預覽抽屜 (SIDE CART DRAWER) -->
+  <!-- 右側購物車預覽抽屜 -->
   <div class="cart-drawer-overlay" id="cartOverlay" onclick="closeCartDrawer()"></div>
   <div class="cart-drawer" id="cartDrawer">
     <div class="cart-drawer-header">
@@ -744,7 +744,7 @@
     </div>
 
     <div class="cart-drawer-body" id="drawerBody">
-      <!-- 購物車商品內容將動態渲染喺度 -->
+      <!-- 購物車商品內容 -->
     </div>
 
     <div class="cart-drawer-footer">
@@ -802,17 +802,24 @@
       document.getElementById('prodPrice').innerText = `HK$${price}`;
     }
 
-    // 4. 載入商品資料 (支援 Color 字串/物件兩種格式與庫存雜訊清理)
+    // 4. 載入商品資料 (🔥 加入 .flat(Infinity) 自動拍平 [ [ {...} ] ] 嵌套結構)
     async function loadProductDetails() {
       if (!productId) return;
 
       try {
-        const response = await fetch('products.json');
-        const products = await response.json();
-        currentProduct = products.find(p => p.id === productId);
+        const response = await fetch('products.json?v=' + Date.now());
+        const rawData = await response.json();
+
+        // 🔥 強制打平嵌套陣列 [ [ {...} ] ]
+        const products = Array.isArray(rawData) 
+          ? rawData.flat(Infinity).filter(p => p && typeof p === 'object' && !Array.isArray(p))
+          : [];
+
+        // 比對商品 ID (忽略大小寫與空格)
+        currentProduct = products.find(p => String(p.id).toLowerCase().trim() === String(productId).toLowerCase().trim());
 
         if (currentProduct) {
-          document.getElementById('prodName').innerText = currentProduct.name;
+          document.getElementById('prodName').innerText = currentProduct.name || 'untitled';
           
           if (currentProduct.category) {
             const rawCat = currentProduct.category;
@@ -822,11 +829,12 @@
             document.getElementById('prodCategory').innerText = (catLabel || 'pesmire collection').toLowerCase();
           }
 
-          // 載入顏色 (同時支援 "字串陣列" 與 "帶價格的物件陣列")
+          // 載入顏色 (兼顧 colors / color 欄位)
           const colorSelect = document.getElementById('colorSelect');
-          const rawColors = currentProduct.colors || ["standard"];
+          const rawColors = currentProduct.colors || currentProduct.color || ["standard"];
+          const colorArr = Array.isArray(rawColors) ? rawColors : [rawColors];
           
-          colorSelect.innerHTML = rawColors.map(c => {
+          colorSelect.innerHTML = colorArr.map(c => {
             if (typeof c === 'object' && c !== null) {
               const cleanedName = (c.name || '').replace(/[\(（].*?[\)）]/g, '').trim();
               return `<option value="${cleanedName}" data-price="${c.price}">${cleanedName}</option>`;
@@ -836,30 +844,35 @@
             }
           }).join('');
 
-          // 監聽選單切換事件
           colorSelect.onchange = function() {
             updateDynamicPrice();
           };
 
-          // 載入 Size
+          // 載入 Size (兼顧 sizes / size 欄位)
           const sizeSelect = document.getElementById('sizeSelect');
-          const sizes = currentProduct.sizes || ["free size"];
-          sizeSelect.innerHTML = sizes.map(s => `<option value="${s}">${s}</option>`).join('');
+          const rawSizes = currentProduct.sizes || currentProduct.size || ["free size"];
+          const sizeArr = Array.isArray(rawSizes) ? rawSizes : [rawSizes];
+          sizeSelect.innerHTML = sizeArr.map(s => `<option value="${s}">${s}</option>`).join('');
 
-          // 載入描述
+          // 載入描述 (兼顧 description / details 欄位)
           const descList = document.getElementById('descList');
-          const descArray = currentProduct.description || [
+          let descArray = currentProduct.description || currentProduct.details || [
             "minimalist high-fashion silhouette",
             "crafted with premium comfort fabric",
             "tailored for versatile daily wardrobe"
           ];
+          if (typeof descArray === 'string') {
+            descArray = descArray.split('\n');
+          }
           descList.innerHTML = descArray.map(item => `<li>${item}</li>`).join('');
 
-          totalImages = currentProduct.imageCount || 1;
+          totalImages = parseInt(currentProduct.imageCount || 1, 10);
           currentImgIndex = 1;
 
           updateImageDisplay();
-          updateDynamicPrice(); // 顯示當前選項價錢
+          updateDynamicPrice();
+        } else {
+          document.getElementById('prodName').innerText = 'item not found / 找不到商品';
         }
       } catch (error) {
         console.error("無法載入商品詳情:", error);
@@ -883,10 +896,17 @@
       const prevBtn = document.getElementById('prevBtn');
       const nextBtn = document.getElementById('nextBtn');
 
+      if (!currentProduct) return;
+
       mainImg.style.opacity = '0.3';
 
       setTimeout(() => {
         mainImg.src = `images/${currentProduct.id}/${currentImgIndex}.webp`;
+        // 相容 .webp 與 .jpg
+        mainImg.onerror = function() {
+          this.onerror = null;
+          this.src = `images/${currentProduct.id}/${currentImgIndex}.jpg`;
+        };
         mainImg.style.opacity = '1';
       }, 150);
 
@@ -903,7 +923,7 @@
       }
     }
 
-    // 5. 加入購物車 (自動帶入選定選項嘅正確價錢)
+    // 5. 加入購物車
     function addToCart() {
       if (!currentProduct) return;
 
@@ -935,8 +955,6 @@
 
       localStorage.setItem('pesmire_cart', JSON.stringify(cart));
       updateCartBadge();
-
-      // 加入成功後自動彈出右側購物車抽屜
       openCartDrawer();
     }
 
@@ -986,7 +1004,6 @@
       document.getElementById('cartOverlay').classList.remove('active');
     }
 
-    // 7. 清空購物車 Modal 控制
     function openConfirmModal() {
       const cart = JSON.parse(localStorage.getItem('pesmire_cart')) || [];
       if (cart.length === 0) return;
