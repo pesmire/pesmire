@@ -617,23 +617,25 @@
     let allLoadedProducts = []; // 備份所有商品資料供全站搜尋使用
 
   // 🛠️ 增強版 Category 比對函數 (相容 Array、String、大小寫、空格、categories/cat 命名及「套裝」等中文)
-function checkCategoryMatch(product, target) {
-  if (!product) return false;
+// 🛠️ 萬能相容 Category 檢查函數 (無論傳入 product 物件、字串還是陣列，均能自動識別)
+function checkCategoryMatch(input, target) {
+  if (!input || !target) return false;
   
-  // 1. 自動兼顧 category, categories, cat 等不同寫法
-  const pCategory = product.category || product.categories || product.cat;
+  // 1. 如果傳入的是商品物件 (object)，自動取出 category/categories/cat 欄位
+  let pCategory = input;
+  if (typeof input === 'object' && !Array.isArray(input)) {
+    pCategory = input.category || input.categories || input.cat;
+  }
+  
   if (!pCategory) return false;
 
   const targetLower = String(target).toLowerCase().trim();
-  
-  // 轉為陣列統一處理
   const catList = Array.isArray(pCategory) ? pCategory : [pCategory];
 
   return catList.some(item => {
     const cStr = String(item).toLowerCase().trim();
     if (cStr === targetLower) return true;
-    
-    // 特殊相容：若搜尋 set，亦自動相容包含 "套裝" 或 "set" 嘅類別
+    // 特殊相容：搜尋 set 時自動相容包含 "set" 或 "套裝" 的分類
     if (targetLower === 'set' && (cStr.includes('set') || cStr.includes('套裝'))) {
       return true;
     }
@@ -647,9 +649,10 @@ function getSubCategoryVal(p) {
 }
 
 // 載入商品資料主邏輯
+// 載入商品資料並依版面與分類渲染
 async function loadProducts() {
   try {
-    // 💡 加強：加上時間戳記 ?v= 防止瀏覽器快取舊版 products.json
+    // 加上時間戳 ?v= 避免瀏覽器 Cache 舊版 products.json
     const response = await fetch('products.json?v=' + Date.now());
     const products = await response.json();
     
@@ -660,7 +663,7 @@ async function loadProducts() {
     const subFilter = urlParams.get('sub');
     const mainContent = document.getElementById('mainContent');
 
-    // 💡 加強：只要 imageCount 存在且 > 0，或未設置 imageCount 嘅商品都允許顯示（避免因沒設 imageCount 而被誤隱藏）
+    // 篩選有效商品 (避免沒設 imageCount 被誤隱藏)
     let validProducts = products.filter(p => p.imageCount === undefined || p.imageCount === null || parseInt(p.imageCount, 10) > 0);
 
     const catConfig = {
@@ -678,12 +681,7 @@ async function loadProducts() {
         const mainCategories = ['top', 'bottom', 'set', 'accessory', 'artist'];
         
         mainCategories.forEach(cat => {
-            let catProducts = validProducts.filter(p => {
-                if (cat === 'artist') {
-                    return checkCategoryMatch(p, 'artist') || checkCategoryMatch(p, 'artist同款') || p.isArtist === true;
-                }
-                return checkCategoryMatch(p, cat);
-            });
+            let catProducts = validProducts.filter(p => checkCategoryMatch(p, cat));
 
             if (catProducts.length > 0) {
                 let preview = catProducts.sort(() => 0.5 - Math.random()).slice(0, 8);
@@ -714,13 +712,13 @@ async function loadProducts() {
         if (lowerCat === 'instock') displayTitle = '現貨專區';
         else if (lowerCat === 'artist' || lowerCat === 'artist同款') displayTitle = 'artist同款';
 
-        let titleText = subFilter ? `${displayTitle} / ${subFilter}` : displayTitle;
+        let titleText = (subFilter && subFilter !== 'undefined') ? `${displayTitle} / ${subFilter}` : displayTitle;
         let titleHtml = `<h2 class="section-title">${titleText}</h2>`;
 
         let subNavHtml = '';
         if (catConfig[lowerCat] && catConfig[lowerCat].length > 0) {
             subNavHtml = '<div class="sub-category-nav">';
-            subNavHtml += `<a href="?category=${lowerCat}" class="${!subFilter ? 'active' : ''}">all</a>`;
+            subNavHtml += `<a href="?category=${lowerCat}" class="${(!subFilter || subFilter === 'undefined') ? 'active' : ''}">all</a>`;
             catConfig[lowerCat].forEach(sub => {
                subNavHtml += `<a href="?category=${lowerCat}&sub=${sub}" class="${subFilter === sub ? 'active' : ''}">${sub}</a>`;
             });
@@ -753,19 +751,13 @@ async function loadProducts() {
         } 
         // 一般分類頁面邏輯
         else {
-            currentCategoryProducts = validProducts.filter(p => {
-                if (lowerCat === 'artist' || lowerCat === 'artist同款') {
-                    return checkCategoryMatch(p, 'artist') || checkCategoryMatch(p, 'artist同款') || p.isArtist === true;
-                }
-                return checkCategoryMatch(p, lowerCat);
-            });
+            currentCategoryProducts = validProducts.filter(p => checkCategoryMatch(p, lowerCat));
 
             if (subFilter && subFilter !== 'undefined' && subFilter.trim() !== '') {
                 currentCategoryProducts = currentCategoryProducts.filter(p => getSubCategoryVal(p) === subFilter.toLowerCase().trim());
             }
         }
 
-        // 排序下拉選單
         let filterHtml = `
           <div class="filter-container">
             <span class="filter-label">排序 / sort by:</span>
