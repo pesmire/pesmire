@@ -785,7 +785,24 @@
       document.getElementById('cartBadge').innerText = totalQty;
     }
 
-    // 2. 載入商品資料 (含 Category 陣列安全轉型及 Color 庫存雜訊清理)
+    // 2. 取得當前選取選項的價錢
+    function getSelectedPrice() {
+      const colorSelect = document.getElementById('colorSelect');
+      if (!colorSelect || !colorSelect.options.length) {
+        return currentProduct ? currentProduct.price : '---';
+      }
+      const selectedOption = colorSelect.options[colorSelect.selectedIndex];
+      const customPrice = selectedOption ? selectedOption.getAttribute('data-price') : null;
+      return customPrice ? customPrice : (currentProduct ? currentProduct.price : '---');
+    }
+
+    // 3. 切換選項時動態更新頁面顯示價錢
+    function updateDynamicPrice() {
+      const price = getSelectedPrice();
+      document.getElementById('prodPrice').innerText = `HK$${price}`;
+    }
+
+    // 4. 載入商品資料 (支援 Color 字串/物件兩種格式與庫存雜訊清理)
     async function loadProductDetails() {
       if (!productId) return;
 
@@ -796,7 +813,6 @@
 
         if (currentProduct) {
           document.getElementById('prodName').innerText = currentProduct.name;
-          document.getElementById('prodPrice').innerText = `HK$${currentProduct.price}`;
           
           if (currentProduct.category) {
             const rawCat = currentProduct.category;
@@ -806,11 +822,24 @@
             document.getElementById('prodCategory').innerText = (catLabel || 'pesmire collection').toLowerCase();
           }
 
-          // 載入顏色 (自動淨化字串中的庫存括號備註，例：'dark grey(現貨*2)' -> 'dark grey')
+          // 載入顏色 (同時支援 "字串陣列" 與 "帶價格的物件陣列")
           const colorSelect = document.getElementById('colorSelect');
           const rawColors = currentProduct.colors || ["standard"];
-          const colors = rawColors.map(c => c.replace(/[\(（].*?[\)）]/g, '').trim());
-          colorSelect.innerHTML = colors.map(c => `<option value="${c}">${c}</option>`).join('');
+          
+          colorSelect.innerHTML = rawColors.map(c => {
+            if (typeof c === 'object' && c !== null) {
+              const cleanedName = (c.name || '').replace(/[\(（].*?[\)）]/g, '').trim();
+              return `<option value="${cleanedName}" data-price="${c.price}">${cleanedName}</option>`;
+            } else {
+              const cleanedName = String(c).replace(/[\(（].*?[\)）]/g, '').trim();
+              return `<option value="${cleanedName}">${cleanedName}</option>`;
+            }
+          }).join('');
+
+          // 監聽選單切換事件
+          colorSelect.onchange = function() {
+            updateDynamicPrice();
+          };
 
           // 載入 Size
           const sizeSelect = document.getElementById('sizeSelect');
@@ -830,6 +859,7 @@
           currentImgIndex = 1;
 
           updateImageDisplay();
+          updateDynamicPrice(); // 顯示當前選項價錢
         }
       } catch (error) {
         console.error("無法載入商品詳情:", error);
@@ -873,12 +903,13 @@
       }
     }
 
-    // 3. 加入購物車
+    // 5. 加入購物車 (自動帶入選定選項嘅正確價錢)
     function addToCart() {
       if (!currentProduct) return;
 
       const selectedColor = document.getElementById('colorSelect').value;
       const selectedSize = document.getElementById('sizeSelect').value;
+      const actualPrice = getSelectedPrice();
 
       let cart = JSON.parse(localStorage.getItem('pesmire_cart')) || [];
       
@@ -894,7 +925,7 @@
         cart.push({
           id: currentProduct.id,
           name: currentProduct.name,
-          price: currentProduct.price,
+          price: actualPrice,
           image: `images/${currentProduct.id}/1.webp`,
           color: selectedColor,
           size: selectedSize,
@@ -909,7 +940,7 @@
       openCartDrawer();
     }
 
-    // 4. 右側抽屜 Drawer 控制與內容渲染
+    // 6. 右側抽屜 Drawer 控制與內容渲染
     function renderCartDrawer() {
       const cart = JSON.parse(localStorage.getItem('pesmire_cart')) || [];
       const drawerBody = document.getElementById('drawerBody');
@@ -955,10 +986,10 @@
       document.getElementById('cartOverlay').classList.remove('active');
     }
 
-    // 5. 清空購物車 Modal 控制
+    // 7. 清空購物車 Modal 控制
     function openConfirmModal() {
       const cart = JSON.parse(localStorage.getItem('pesmire_cart')) || [];
-      if (cart.length === 0) return; // 購物車係空嘅時候唔洗彈 Modal
+      if (cart.length === 0) return;
       document.getElementById('confirmModal').classList.add('active');
     }
 
