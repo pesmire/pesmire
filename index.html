@@ -106,7 +106,13 @@
         opacity: 1;
     }
 
-    /* 白線購物車 Logo */
+    /* 白線購物車 Logo 與 搜尋圖標 */
+    .header-actions { display: flex; align-items: center; gap: 20px; }
+
+    .search-icon-link { color: #FFFFFF; cursor: pointer; display: flex; align-items: center; }
+    .search-icon-svg { width: 18px; height: 18px; stroke: #FFFFFF; stroke-width: 1.2; fill: none; transition: transform 0.3s ease; }
+    .search-icon-link:hover .search-icon-svg { transform: scale(1.1); }
+
     .cart-icon-link {
         position: relative;
         display: flex;
@@ -209,12 +215,10 @@
         gap: 80px 40px; 
     }
 
-    /* 首頁：每排 4 個 (4x2 排版) */
     .product-grid.home-grid {
         grid-template-columns: repeat(4, 1fr);
     }
 
-    /* 分類頁面：每排 3 個 */
     .product-grid.category-grid {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -243,7 +247,7 @@
     }
     
     .no-products {
-        grid-column: 1 / -1; text-align: center; font-size: 13px; color: #999; letter-spacing: 0.1em; padding: 50px 0;
+        grid-column: 1 / -1; text-align: center; font-size: 13px; color: #999; letter-spacing: 0.1em; padding: 50px 0; line-height: 2;
     }
 
     /* 首頁佈局與細分類導航樣式 */
@@ -397,12 +401,6 @@
     }
 
     /* 9. 搜尋彈窗 (SEARCH MODAL) & 頂部按鈕 樣式 */
-    .header-actions { display: flex; align-items: center; gap: 20px; }
-
-    .search-icon-link { color: #FFFFFF; cursor: pointer; display: flex; align-items: center; }
-    .search-icon-svg { width: 18px; height: 18px; stroke: #FFFFFF; stroke-width: 1.2; fill: none; transition: transform 0.3s ease; }
-    .search-icon-link:hover .search-icon-svg { transform: scale(1.1); }
-
     .search-modal-overlay {
         position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
         background-color: rgba(5, 5, 5, 0.92); z-index: 2000;
@@ -596,7 +594,7 @@
         <div class="footer-col">
           <h4>connect</h4>
           <a href="https://www.instagram.com/pesmire.x/" target="_blank">instagram</a>
-          <a href="https://www.instagram.com/pesmire.x/">contact us</a>
+          <a href="https://www.instagram.com/pesmire.x/" target="_blank">contact us</a>
         </div>
       </div>
     </div>
@@ -616,18 +614,33 @@
     let currentCategoryProducts = []; // 儲存當前分類過濾後的商品清單
     let allLoadedProducts = []; // 備份所有商品資料供全站搜尋使用
 
-    // 🛠️ 安全檢查 Category 工具函數 (可同時相容 Array 與 String)
-    function checkCategoryMatch(pCategory, target) {
-      if (!pCategory) return false;
-      const targetLower = String(target).toLowerCase().trim();
-      if (Array.isArray(pCategory)) {
-        return pCategory.some(item => String(item).toLowerCase().trim() === targetLower);
+    // 🛠️ 萬能 Category 檢查工具函數 (自動相容傳入 product 物件、字串、陣列、大小寫、空格與「套裝」等中文)
+    function checkCategoryMatch(input, target) {
+      if (!input || !target) return false;
+
+      let pCategory = input;
+      if (typeof input === 'object' && !Array.isArray(input)) {
+        pCategory = input.category || input.categories || input.cat;
       }
-      return String(pCategory).toLowerCase().trim() === targetLower;
+
+      if (!pCategory) return false;
+
+      const targetLower = String(target).toLowerCase().trim();
+      const catList = Array.isArray(pCategory) ? pCategory : [pCategory];
+
+      return catList.some(item => {
+        const cStr = String(item).toLowerCase().trim();
+        if (cStr === targetLower) return true;
+        if (targetLower === 'set' && (cStr.includes('set') || cStr.includes('套裝'))) {
+          return true;
+        }
+        return false;
+      });
     }
 
-    // 🛠️ 安全取得 SubCategory 工具函數
+    // 🛠️ 取得 SubCategory 工具函數
     function getSubCategoryVal(p) {
+      if (!p) return '';
       return (p.subCategory || p.subcategory || p.sub_category || '').toString().toLowerCase().trim();
     }
 
@@ -635,7 +648,7 @@
        return `
          <a href="product.html?id=${product.id}" class="product-card">
             <div class="image-wrapper">
-              <img src="images/${product.id}/1.webp" alt="${product.name}" loading="lazy">
+              <img src="images/${product.id}/1.webp" alt="${product.name}" loading="lazy" width="300" height="400">
             </div>
             <div class="product-info">
               <span class="product-title">${product.name}</span>
@@ -645,7 +658,7 @@
        `;
     }
 
-    // 1. 從 Product ID 提取數字進行新舊判斷 (例如 j089 -> 89)
+    // 1. 從 Product ID 提取數字進行新舊判斷
     function getIdNumber(id) {
       if (!id) return 0;
       const match = id.match(/\d+/);
@@ -662,7 +675,6 @@
       } else if (sortType === 'oldest') {
         return list.sort((a, b) => getIdNumber(a.id) - getIdNumber(b.id));
       } else {
-        // 'newest' (預設：由新至舊，數字越大越新)
         return list.sort((a, b) => getIdNumber(b.id) - getIdNumber(a.id));
       }
     }
@@ -689,7 +701,8 @@
     function updateCartBadge() {
       const cart = JSON.parse(localStorage.getItem('pesmire_cart')) || [];
       const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
-      document.getElementById('cartBadge').innerText = totalQty;
+      const badge = document.getElementById('cartBadge');
+      if (badge) badge.innerText = totalQty;
     }
 
     // 5. 右側抽屜 Drawer 控制與內容渲染
@@ -697,6 +710,8 @@
       const cart = JSON.parse(localStorage.getItem('pesmire_cart')) || [];
       const drawerBody = document.getElementById('drawerBody');
       const drawerSubtotal = document.getElementById('drawerSubtotal');
+
+      if (!drawerBody || !drawerSubtotal) return;
 
       if (cart.length === 0) {
         drawerBody.innerHTML = '<div class="drawer-empty-msg">your cart is currently empty.</div>';
@@ -760,9 +775,14 @@
     // 7. 載入商品資料並依版面與分類渲染
     async function loadProducts() {
       try {
-        const response = await fetch('products.json');
+        const response = await fetch('products.json?v=' + Date.now());
+        if (!response.ok) {
+          console.error("無法抓取 products.json，狀態碼:", response.status);
+          document.getElementById('mainContent').innerHTML = '<div class="no-products">無法讀取 products.json，請檢查檔案名稱或伺服器運行狀態。</div>';
+          return;
+        }
+
         const products = await response.json();
-        
         allLoadedProducts = products; // 備份全站資料供搜尋使用
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -770,7 +790,7 @@
         const subFilter = urlParams.get('sub');
         const mainContent = document.getElementById('mainContent');
 
-        let validProducts = products.filter(p => p.imageCount > 0);
+        let validProducts = products.filter(p => p.imageCount === undefined || p.imageCount === null || parseInt(p.imageCount, 10) > 0);
 
         const catConfig = {
             'top': ['短袖背心', '長袖', '外套'],
@@ -778,7 +798,8 @@
             'accessory': ['帽', '袋', '戒指', '頸鏈', '皮帶', '鞋'],
             'set': [],
             'instock': [],
-            'artist': []
+            'artist': [],
+            'hot': []
         };
 
         // A. 首頁 (Homepage Layout)
@@ -787,16 +808,10 @@
             const mainCategories = ['top', 'bottom', 'set', 'accessory', 'artist'];
             
             mainCategories.forEach(cat => {
-                let catProducts = validProducts.filter(p => {
-                    if (cat === 'artist') {
-                        return checkCategoryMatch(p.category, 'artist') || checkCategoryMatch(p.category, 'artist同款') || p.isArtist === true;
-                    }
-                    return checkCategoryMatch(p.category, cat);
-                });
+                let catProducts = validProducts.filter(p => checkCategoryMatch(p, cat));
 
                 if (catProducts.length > 0) {
-                    // 隨機選取 8 個商品 (4x2 排版)
-                    let preview = catProducts.sort(() => 0.5 - Math.random()).slice(0, 8);
+                    let preview = [...catProducts].sort(() => 0.5 - Math.random()).slice(0, 8);
                     let gridHtml = preview.map(p => generateProductCard(p)).join('');
                     let catTitle = cat === 'artist' ? 'artist同款' : cat;
                     
@@ -816,7 +831,7 @@
                 mainContent.innerHTML = '<div class="no-products">coming soon... 暫時未有商品</div>';
             }
         } 
-        // B. 分類頁面 (Category Page Layout，包含 new, hot, instock, artist 及各細分類)
+        // B. 分類頁面 (Category Page Layout)
         else {
             const lowerCat = categoryFilter.toLowerCase().trim();
             
@@ -824,20 +839,20 @@
             if (lowerCat === 'instock') displayTitle = '現貨專區';
             else if (lowerCat === 'artist' || lowerCat === 'artist同款') displayTitle = 'artist同款';
 
-            let titleText = subFilter ? `${displayTitle} / ${subFilter}` : displayTitle;
+            let titleText = (subFilter && subFilter !== 'undefined') ? `${displayTitle} / ${subFilter}` : displayTitle;
             let titleHtml = `<h2 class="section-title">${titleText}</h2>`;
 
             let subNavHtml = '';
             if (catConfig[lowerCat] && catConfig[lowerCat].length > 0) {
                 subNavHtml = '<div class="sub-category-nav">';
-                subNavHtml += `<a href="?category=${lowerCat}" class="${!subFilter ? 'active' : ''}">all</a>`;
+                subNavHtml += `<a href="?category=${lowerCat}" class="${(!subFilter || subFilter === 'undefined') ? 'active' : ''}">all</a>`;
                 catConfig[lowerCat].forEach(sub => {
                    subNavHtml += `<a href="?category=${lowerCat}&sub=${sub}" class="${subFilter === sub ? 'active' : ''}">${sub}</a>`;
                 });
                 subNavHtml += '</div>';
             }
 
-            // 特殊邏輯：new 分頁 (自動抓取「每個分類與細分類」最新嘅 8 個商品)
+            // new 分頁
             if (lowerCat === 'new') {
                 let newProductsMap = new Map();
 
@@ -846,14 +861,14 @@
                     if (subs.length > 0) {
                         subs.forEach(sub => {
                             let subProds = validProducts.filter(p => 
-                                checkCategoryMatch(p.category, cat) &&
+                                checkCategoryMatch(p, cat) &&
                                 getSubCategoryVal(p) === sub.toLowerCase().trim()
                             );
                             subProds.sort((a, b) => getIdNumber(b.id) - getIdNumber(a.id));
                             subProds.slice(0, 8).forEach(p => newProductsMap.set(p.id, p));
                         });
                     } else {
-                        let catProds = validProducts.filter(p => checkCategoryMatch(p.category, cat));
+                        let catProds = validProducts.filter(p => checkCategoryMatch(p, cat));
                         catProds.sort((a, b) => getIdNumber(b.id) - getIdNumber(a.id));
                         catProds.slice(0, 8).forEach(p => newProductsMap.set(p.id, p));
                     }
@@ -861,21 +876,15 @@
 
                 currentCategoryProducts = Array.from(newProductsMap.values());
             } 
-            // 一般分類頁面邏輯 (包含 artist 同款支援)
+            // 一般分類頁面邏輯
             else {
-                currentCategoryProducts = validProducts.filter(p => {
-                    if (lowerCat === 'artist' || lowerCat === 'artist同款') {
-                        return checkCategoryMatch(p.category, 'artist') || checkCategoryMatch(p.category, 'artist同款') || p.isArtist === true;
-                    }
-                    return checkCategoryMatch(p.category, lowerCat);
-                });
+                currentCategoryProducts = validProducts.filter(p => checkCategoryMatch(p, lowerCat));
 
-                if (subFilter) {
+                if (subFilter && subFilter !== 'undefined' && subFilter.trim() !== '') {
                     currentCategoryProducts = currentCategoryProducts.filter(p => getSubCategoryVal(p) === subFilter.toLowerCase().trim());
                 }
             }
 
-            // 加入篩選器下拉選單 HTML
             let filterHtml = `
               <div class="filter-container">
                 <span class="filter-label">排序 / sort by:</span>
@@ -888,7 +897,6 @@
               </div>
             `;
 
-            // 預設套用「由新至舊」排序
             let sortedProducts = sortProducts(currentCategoryProducts, 'newest');
 
             let gridHtml = '';
@@ -903,6 +911,7 @@
 
       } catch (error) {
         console.error("無法載入商品資料:", error);
+        document.getElementById('mainContent').innerHTML = `<div class="no-products">無法載入資料，請檢查 products.json 格式是否為合法 JSON。<br><small>${error.message}</small></div>`;
       }
     }
 
@@ -910,19 +919,23 @@
     function openSearchModal() {
       const modal = document.getElementById('searchModal');
       const input = document.getElementById('searchInput');
-      modal.classList.add('active');
-      setTimeout(() => input.focus(), 100);
+      if (modal && input) {
+        modal.classList.add('active');
+        setTimeout(() => input.focus(), 100);
+      }
     }
 
     function closeSearchModal(event) {
       if (!event || event.target.classList.contains('search-modal-overlay') || event.target.classList.contains('search-close-btn')) {
-        document.getElementById('searchModal').classList.remove('active');
+        const modal = document.getElementById('searchModal');
+        if (modal) modal.classList.remove('active');
       }
     }
 
     function handleSearchInput(e) {
       const query = e.target.value.toLowerCase().trim();
       const container = document.getElementById('searchResultsContainer');
+      if (!container) return;
 
       if (!query) {
         container.innerHTML = '';
@@ -932,7 +945,7 @@
       const matched = allLoadedProducts.filter(p => {
         const nameMatch = p.name && p.name.toLowerCase().includes(query);
         const idMatch = p.id && p.id.toLowerCase().includes(query);
-        const catMatch = checkCategoryMatch(p.category, query) || (Array.isArray(p.category) && p.category.some(c => String(c).toLowerCase().includes(query)));
+        const catMatch = checkCategoryMatch(p, query);
         const subMatch = getSubCategoryVal(p).includes(query);
 
         return nameMatch || idMatch || catMatch || subMatch;
@@ -948,10 +961,12 @@
     // 9. 返回頂部與 Scroll 監聽
     window.addEventListener('scroll', () => {
       const btn = document.getElementById('backToTopBtn');
-      if (window.scrollY > 400) {
-        btn.classList.add('visible');
-      } else {
-        btn.classList.remove('visible');
+      if (btn) {
+        if (window.scrollY > 400) {
+          btn.classList.add('visible');
+        } else {
+          btn.classList.remove('visible');
+        }
       }
     });
 
@@ -962,11 +977,13 @@
     // 10. Toast 提示訊息彈窗
     function showToast(msg) {
       const toast = document.getElementById('toastNotification');
-      toast.innerText = msg;
-      toast.classList.add('active');
-      setTimeout(() => {
-        toast.classList.remove('active');
-      }, 3000);
+      if (toast) {
+        toast.innerText = msg;
+        toast.classList.add('active');
+        setTimeout(() => {
+          toast.classList.remove('active');
+        }, 3000);
+      }
     }
     
     // 初始化執行
