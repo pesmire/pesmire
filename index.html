@@ -52,7 +52,7 @@
 
     nav { display: flex; gap: 40px; }
 
-    /* --- 下拉選單 (Dropdown) --- */
+    /* 下拉選單 (Dropdown) */
     .nav-item {
         position: relative;
         display: flex;
@@ -106,7 +106,7 @@
         opacity: 1;
     }
 
-    /* 白線購物車 Logo 與 搜尋圖標 */
+    /* 圖示按鈕 */
     .header-actions { display: flex; align-items: center; gap: 20px; }
 
     .search-icon-link { color: #FFFFFF; cursor: pointer; display: flex; align-items: center; }
@@ -209,19 +209,14 @@
         background-color: #FFFFFF;
     }
 
-    /* 4. 畫廊級別商品網格 (首頁 4 列 vs 分類頁 3 列) */
+    /* 4. 商品網格 */
     .product-grid {
         display: grid;
         gap: 80px 40px; 
     }
 
-    .product-grid.home-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    .product-grid.category-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
+    .product-grid.home-grid { grid-template-columns: repeat(4, 1fr); }
+    .product-grid.category-grid { grid-template-columns: repeat(3, 1fr); }
 
     .product-card { display: block; text-align: left; cursor: pointer; }
 
@@ -251,31 +246,17 @@
     }
 
     /* 首頁佈局與細分類導航樣式 */
-    .home-section {
-        margin-bottom: 150px;
-    }
-    
-    .more-container {
-        text-align: center;
-        margin-top: 60px;
-    }
+    .home-section { margin-bottom: 150px; }
+    .more-container { text-align: center; margin-top: 60px; }
     
     .more-btn {
         font-size: 11px; font-weight: 300; letter-spacing: 0.2em; text-transform: lowercase;
         color: #111111; border-bottom: 1px solid #111111; padding-bottom: 4px; transition: opacity 0.4s ease;
     }
     
-    .sub-category-nav {
-        display: flex; justify-content: center; gap: 30px; margin-bottom: 80px; flex-wrap: wrap;
-    }
-    
-    .sub-category-nav a {
-        font-size: 12px; font-weight: 300; letter-spacing: 0.15em; color: #999999; text-transform: lowercase;
-    }
-    
-    .sub-category-nav a.active, .sub-category-nav a:hover {
-        color: #111111;
-    }
+    .sub-category-nav { display: flex; justify-content: center; gap: 30px; margin-bottom: 80px; flex-wrap: wrap; }
+    .sub-category-nav a { font-size: 12px; font-weight: 300; letter-spacing: 0.15em; color: #999999; text-transform: lowercase; }
+    .sub-category-nav a.active, .sub-category-nav a:hover { color: #111111; }
 
     /* 5. 右側購物車預覽抽屜 (SIDE CART DRAWER) */
     .cart-drawer-overlay {
@@ -293,9 +274,7 @@
     }
     .cart-drawer.active { transform: translateX(0); }
 
-    .cart-drawer-header {
-        padding: 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #EEEEEE;
-    }
+    .cart-drawer-header { padding: 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #EEEEEE; }
     .cart-drawer-title { font-size: 13px; font-weight: 300; letter-spacing: 0.2em; text-transform: lowercase; color: #111111; }
     .cart-drawer-close { background: none; border: none; font-size: 22px; cursor: pointer; color: #111111; line-height: 1; padding: 0 5px; }
 
@@ -400,7 +379,7 @@
         text-transform: lowercase;
     }
 
-    /* 9. 搜尋彈窗 (SEARCH MODAL) & 頂部按鈕 樣式 */
+    /* 9. 搜尋彈窗 (SEARCH MODAL) */
     .search-modal-overlay {
         position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
         background-color: rgba(5, 5, 5, 0.92); z-index: 2000;
@@ -424,7 +403,7 @@
     
     .search-results-container { max-height: 60vh; overflow-y: auto; padding: 20px 0; }
 
-    /* 10. 返回頂部按鈕 (BACK TO TOP) 樣式 */
+    /* 10. 返回頂部按鈕 */
     .back-to-top-btn {
         position: fixed; bottom: 30px; right: 30px; width: 40px; height: 40px;
         background-color: #050505; color: #FFFFFF; border: 1px solid #333333;
@@ -435,7 +414,7 @@
     .back-to-top-btn.visible { opacity: 0.8; visibility: visible; }
     .back-to-top-btn:hover { opacity: 1; background-color: #111111; }
 
-    /* 11. Toast 輕提示樣式 */
+    /* 11. Toast 提示 */
     .toast-notification {
         position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(20px);
         background-color: #111111; color: #FFFFFF; padding: 12px 25px;
@@ -515,7 +494,7 @@
     <!-- 內容將由 JavaScript 完全接管 -->
   </main>
 
-  <!-- 右側購物車預覽抽屜 (SIDE CART DRAWER) -->
+  <!-- 右側購物車預覽抽屜 -->
   <div class="cart-drawer-overlay" id="cartOverlay" onclick="closeCartDrawer()"></div>
   <div class="cart-drawer" id="cartDrawer">
     <div class="cart-drawer-header">
@@ -524,7 +503,7 @@
     </div>
 
     <div class="cart-drawer-body" id="drawerBody">
-      <!-- 購物車商品內容動態渲染區 -->
+      <!-- 購物車商品區 -->
     </div>
 
     <div class="cart-drawer-footer">
@@ -558,7 +537,7 @@
         <button class="search-close-btn" onclick="closeSearchModal()">&times;</button>
       </div>
       <div class="search-results-container" id="searchResultsContainer">
-        <!-- 搜尋結果區塊 -->
+        <!-- 搜尋結果區 -->
       </div>
     </div>
   </div>
@@ -611,44 +590,72 @@
   <div class="toast-notification" id="toastNotification"></div>
 
   <script>
-    let currentCategoryProducts = []; // 儲存當前分類過濾後的商品清單
-    let allLoadedProducts = []; // 備份所有商品資料供全站搜尋使用
+    let currentCategoryProducts = [];
+    let allLoadedProducts = [];
 
-    // 🛠️ 萬能 Category 檢查工具函數 (自動相容傳入 product 物件、字串、陣列、大小寫、空格與「套裝」等中文)
+    // 🛠️ 萬能超級 Category 檢查工具函數 (全方位寬鬆相容機制)
     function checkCategoryMatch(input, target) {
       if (!input || !target) return false;
 
+      // 1. 自動尋找 category 欄位 (相容 category, Category, categories, cat 等鍵名)
       let pCategory = input;
       if (typeof input === 'object' && !Array.isArray(input)) {
-        pCategory = input.category || input.categories || input.cat;
+        pCategory = input.category || input.Category || input.categories || input.cat;
+        if (!pCategory) {
+          for (let k in input) {
+            if (k.toLowerCase().includes('cat')) {
+              pCategory = input[k];
+              break;
+            }
+          }
+        }
       }
 
       if (!pCategory) return false;
 
       const targetLower = String(target).toLowerCase().trim();
-      const catList = Array.isArray(pCategory) ? pCategory : [pCategory];
 
+      // 2. 切割字串支援逗號或斜線，如 "set, artist" 或 "set/artist"
+      let catList = [];
+      if (Array.isArray(pCategory)) {
+        catList = pCategory;
+      } else if (typeof pCategory === 'string') {
+        catList = pCategory.split(/[,/]/);
+      } else {
+        catList = [String(pCategory)];
+      }
+
+      // 3. 比對邏輯
       return catList.some(item => {
         const cStr = String(item).toLowerCase().trim();
         if (cStr === targetLower) return true;
+        
+        // 特殊分類含義擴展比對
         if (targetLower === 'set' && (cStr.includes('set') || cStr.includes('套裝'))) {
+          return true;
+        }
+        if (targetLower === 'artist' && (cStr.includes('artist') || cStr.includes('同款'))) {
+          return true;
+        }
+        if (targetLower === 'instock' && (cStr.includes('instock') || cStr.includes('現貨'))) {
           return true;
         }
         return false;
       });
     }
 
-    // 🛠️ 取得 SubCategory 工具函數
     function getSubCategoryVal(p) {
       if (!p) return '';
       return (p.subCategory || p.subcategory || p.sub_category || '').toString().toLowerCase().trim();
     }
 
     function generateProductCard(product) {
+       // 取出第一張圖片路徑或預設圖
+       const pId = product.id;
        return `
-         <a href="product.html?id=${product.id}" class="product-card">
+         <a href="product.html?id=${pId}" class="product-card">
             <div class="image-wrapper">
-              <img src="images/${product.id}/1.webp" alt="${product.name}" loading="lazy" width="300" height="400">
+              <img src="images/${pId}/1.webp" alt="${product.name}" loading="lazy" width="300" height="400" onerror="this.onerror=null; this.src='images/${pId}/1.jpg';">
             </div>
             <div class="product-info">
               <span class="product-title">${product.name}</span>
@@ -658,20 +665,18 @@
        `;
     }
 
-    // 1. 從 Product ID 提取數字進行新舊判斷
     function getIdNumber(id) {
       if (!id) return 0;
       const match = id.match(/\d+/);
       return match ? parseInt(match[0], 10) : 0;
     }
 
-    // 2. 排序核心邏輯
     function sortProducts(products, sortType) {
       let list = [...products];
       if (sortType === 'price-high') {
-        return list.sort((a, b) => b.price - a.price);
+        return list.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
       } else if (sortType === 'price-low') {
-        return list.sort((a, b) => a.price - b.price);
+        return list.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
       } else if (sortType === 'oldest') {
         return list.sort((a, b) => getIdNumber(a.id) - getIdNumber(b.id));
       } else {
@@ -679,7 +684,6 @@
       }
     }
 
-    // 3. 當使用者選擇排序時觸發
     function applySorting() {
       const sortSelect = document.getElementById('sortSelect');
       if (!sortSelect) return;
@@ -697,7 +701,6 @@
       }
     }
 
-    // 4. 更新購物車數量 Badge
     function updateCartBadge() {
       const cart = JSON.parse(localStorage.getItem('pesmire_cart')) || [];
       const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -705,7 +708,6 @@
       if (badge) badge.innerText = totalQty;
     }
 
-    // 5. 右側抽屜 Drawer 控制與內容渲染
     function renderCartDrawer() {
       const cart = JSON.parse(localStorage.getItem('pesmire_cart')) || [];
       const drawerBody = document.getElementById('drawerBody');
@@ -753,7 +755,6 @@
       document.getElementById('cartOverlay').classList.remove('active');
     }
 
-    // 6. 清空購物車 Modal 控制
     function openConfirmModal() {
       const cart = JSON.parse(localStorage.getItem('pesmire_cart')) || [];
       if (cart.length === 0) return;
@@ -772,7 +773,7 @@
       showToast("cart cleared / 購物車已清空");
     }
 
-    // 7. 載入商品資料並依版面與分類渲染
+    // 7. 載入商品資料的主邏輯
     async function loadProducts() {
       try {
         const response = await fetch('products.json?v=' + Date.now());
@@ -783,14 +784,15 @@
         }
 
         const products = await response.json();
-        allLoadedProducts = products; // 備份全站資料供搜尋使用
+        allLoadedProducts = products;
 
         const urlParams = new URLSearchParams(window.location.search);
         const categoryFilter = urlParams.get('category');
         const subFilter = urlParams.get('sub');
         const mainContent = document.getElementById('mainContent');
 
-        let validProducts = products.filter(p => p.imageCount === undefined || p.imageCount === null || parseInt(p.imageCount, 10) > 0);
+        // ✅ 不過濾 imageCount，顯示所有在 JSON 設定為目標分類的商品
+        let validProducts = products;
 
         const catConfig = {
             'top': ['短袖背心', '長袖', '外套'],
@@ -802,7 +804,7 @@
             'hot': []
         };
 
-        // A. 首頁 (Homepage Layout)
+        // A. 首頁 (Homepage)
         if (!categoryFilter) {
             mainContent.innerHTML = '';
             const mainCategories = ['top', 'bottom', 'set', 'accessory', 'artist'];
@@ -831,7 +833,7 @@
                 mainContent.innerHTML = '<div class="no-products">coming soon... 暫時未有商品</div>';
             }
         } 
-        // B. 分類頁面 (Category Page Layout)
+        // B. 分類頁面 (Category Page)
         else {
             const lowerCat = categoryFilter.toLowerCase().trim();
             
@@ -915,7 +917,6 @@
       }
     }
 
-    // 8. 全站即時搜尋功能
     function openSearchModal() {
       const modal = document.getElementById('searchModal');
       const input = document.getElementById('searchInput');
@@ -958,7 +959,6 @@
       }
     }
 
-    // 9. 返回頂部與 Scroll 監聽
     window.addEventListener('scroll', () => {
       const btn = document.getElementById('backToTopBtn');
       if (btn) {
@@ -974,7 +974,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 10. Toast 提示訊息彈窗
     function showToast(msg) {
       const toast = document.getElementById('toastNotification');
       if (toast) {
